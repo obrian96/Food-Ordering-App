@@ -188,7 +188,7 @@ class SignupPage extends StatelessWidget {
         ModalRoute.withName('/login'),
       );
     } else {
-      msgToast("Signup Failed!");
+      msgToast("ERROR: " + _apiResponse.ApiError);
     }
   }
 }

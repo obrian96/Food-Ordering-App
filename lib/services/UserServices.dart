@@ -10,7 +10,7 @@ import 'package:food_ordering_app/models/ApiRespose.dart';
 class UserServices {
   Future<ApiResponse> details(String userId) async {
     ApiResponse _apiResponse = new ApiResponse();
-    Uri url = Uri.parse('http://192.168.43.27:8800/userdetails');
+    Uri url = Uri.parse('http://192.168.1.2:3000/userdetails');
     try {
       final http.Response response = await http.post(
         url,
@@ -43,7 +43,7 @@ class UserServices {
 
   Future<ApiResponse> login(String userName, String userPass) async {
     ApiResponse _apiResponse = new ApiResponse();
-    Uri url = Uri.parse('http://192.168.43.27:8800/login');
+    Uri url = Uri.parse('http://192.168.1.2:3000/login');
 
     try {
       final http.Response response = await http.post(
@@ -79,7 +79,7 @@ class UserServices {
       String userId, String username, String userPass) async {
     int isAdmin = 0;
     ApiResponse _apiResponse = new ApiResponse();
-    Uri url = Uri.parse('http://192.168.43.27:8800/login/newuser');
+    Uri url = Uri.parse('http://192.168.1.2:3000/login/newuser');
     try {
       final http.Response response = await http.post(
         url,
@@ -106,8 +106,9 @@ class UserServices {
           _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
           break;
       }
-    } on SocketException {
-      _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+    } /* on SocketException */ catch (e) {
+      // _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+      print(e);
     }
     return _apiResponse;
   }
@@ -117,7 +118,7 @@ class UserServices {
 //    int isAvailable= 0;
     ApiResponse _apiResponse = new ApiResponse();
 
-    Uri url = Uri.parse('http://192.168.43.27:8800/');
+    Uri url = Uri.parse('http://192.168.1.2:3000/');
     try {
       final http.Response response = await http.put(
         url,

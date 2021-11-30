@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/Forms/UserDetailForm.dart';
-import 'package:food_ordering_app/models/UserDetails.dart';
-import 'package:food_ordering_app/views/User/OrderHistory.dart';
+import 'package:food_ordering_app/Forms/user_detail_form.dart';
+import 'package:food_ordering_app/models/user_details.dart';
+import 'package:food_ordering_app/views/User/order_history.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatelessWidget {

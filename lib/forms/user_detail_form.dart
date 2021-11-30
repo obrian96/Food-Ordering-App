@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/animation/FadeAnimation.dart';
-import 'package:food_ordering_app/models/ApiError.dart';
-import 'package:food_ordering_app/models/ApiRespose.dart';
-import 'package:food_ordering_app/services/UserServices.dart';
-import 'package:food_ordering_app/widgets/msgToast.dart';
+import 'package:food_ordering_app/animation/fade_animation.dart';
+import 'package:food_ordering_app/models/api_error.dart';
+import 'package:food_ordering_app/models/api_response.dart';
+import 'package:food_ordering_app/services/user_services.dart';
+import 'package:food_ordering_app/widgets/msg_toast.dart';
 
 class UserDetailForm extends StatefulWidget {
   @override
@@ -40,7 +40,7 @@ class _UserDetailFormState extends State<UserDetailForm> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xffEEEEEE),
-                  labelText: "User ID*",
+                  labelText: "user ID*",
                 ),
                 onChanged: (value) {},
               ),

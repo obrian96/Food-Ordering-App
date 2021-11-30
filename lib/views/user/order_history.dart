@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/services/OrderServices.dart';
+import 'package:food_ordering_app/services/order_services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:food_ordering_app/models/Ordersmodel.dart';
+import 'package:food_ordering_app/models/orders_model.dart';
 
 class OrderHistoryPage extends StatelessWidget {
   @override
@@ -22,8 +22,6 @@ class OrderHistoryPage extends StatelessWidget {
     );
   }
 }
-
-
 
 class OrdersList extends StatefulWidget {
   @override

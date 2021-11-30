@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/Forms/DishEditForm.dart';
-import 'package:food_ordering_app/models/Dish.dart';
+import 'package:food_ordering_app/Forms/dish_edit_form.dart';
+import 'package:food_ordering_app/models/dish.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../widgets/CatalogImage.dart';
+import '../../widgets/catalog_image.dart';
 
 class CatalogItemAdmin extends StatelessWidget {
   final Dish dish;

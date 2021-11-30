@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:food_ordering_app/Forms/DishAddForm.dart';
-import 'package:food_ordering_app/Forms/DishEditForm.dart';
-import 'package:food_ordering_app/Forms/UserDetailForm.dart';
-import 'package:food_ordering_app/views/LandingPage.dart';
-import 'package:food_ordering_app/views/DashboardLoader.dart';
-import 'package:food_ordering_app/views/ProfilePage.dart';
-import 'package:food_ordering_app/views/SignupPage.dart';
-import 'views/User/UserDashboard.dart';
-import 'views/Restaurant/AdminDashboard.dart';
-import 'views/LoginPage.dart';
-import 'views/HomePage.dart';
+
+import 'forms/dish_add_form.dart';
+import 'forms/dish_edit_form.dart';
+import 'forms/user_detail_form.dart';
+import 'views/dashboard_loader.dart';
+import 'views/home_page.dart';
+import 'views/landing_page.dart';
+import 'views/login_page.dart';
+import 'views/profile_page.dart';
+import 'views/restaurant/admin_dashboard.dart';
+import 'views/user/user_dashboard.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,11 +23,11 @@ class MyApp extends StatelessWidget {
       '/login': (context) => LoginPage(),
       '/dash': (context) => Dashboard(),
       '/admindash': (context) => AdminDashboard(),
-      '/profile' : (context) => ProfileScreen(),
-      '/loadDash' : (context) => DashboardLoader(),
-      '/dishEditForm' : (context) => DishEditForm(),
-      '/dishAddForm' : (context) => DishAddForm(),
-      '/userDetailsForm' : (context) => UserDetailForm(),
+      '/profile': (context) => ProfileScreen(),
+      '/loadDash': (context) => DashboardLoader(),
+      '/dishEditForm': (context) => DishEditForm(),
+      '/dishAddForm': (context) => DishAddForm(),
+      '/userDetailsForm': (context) => UserDetailForm(),
       // '/signup' : (context) => SignupPage(),
     });
   }

@@ -1,4 +1,4 @@
-import 'package:food_ordering_app/models/Dish.dart';
+import 'package:food_ordering_app/models/dish.dart';
 
 class DishList {
   final List<Dish> dishes;

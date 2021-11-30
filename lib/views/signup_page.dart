@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/animation/FadeAnimation.dart';
-import 'package:food_ordering_app/models/ApiError.dart';
-import 'package:food_ordering_app/models/ApiRespose.dart';
-import 'package:food_ordering_app/services/UserServices.dart';
-import 'package:food_ordering_app/views/Restaurant/AdminDashboard.dart';
-import 'package:food_ordering_app/widgets/msgToast.dart';
+import 'package:food_ordering_app/animation/fade_animation.dart';
+import 'package:food_ordering_app/models/api_error.dart';
+import 'package:food_ordering_app/models/api_response.dart';
+import 'package:food_ordering_app/services/user_services.dart';
+import 'package:food_ordering_app/views/Restaurant/admin_dashboard.dart';
+import 'package:food_ordering_app/widgets/msg_toast.dart';
 
 class SignupPage extends StatelessWidget {
   TextEditingController cusername = new TextEditingController();

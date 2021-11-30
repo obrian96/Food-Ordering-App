@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/animation/FadeAnimation.dart';
-import 'package:food_ordering_app/models/ApiError.dart';
-import 'package:food_ordering_app/models/ApiRespose.dart';
-import 'package:food_ordering_app/models/Dish.dart';
-import 'package:food_ordering_app/services/RestServices.dart';
-import 'package:food_ordering_app/services/UserServices.dart';
-import 'package:food_ordering_app/widgets/msgToast.dart';
+import 'package:food_ordering_app/animation/fade_animation.dart';
+import 'package:food_ordering_app/models/api_error.dart';
+import 'package:food_ordering_app/models/api_response.dart';
+import 'package:food_ordering_app/models/dish.dart';
+import 'package:food_ordering_app/services/rest_services.dart';
+import 'package:food_ordering_app/services/user_services.dart';
+import 'package:food_ordering_app/widgets/msg_toast.dart';
 
 class DishEditForm extends StatefulWidget {
   @override
@@ -131,7 +131,7 @@ class _DishEditFormState extends State<DishEditForm> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xffEEEEEE),
-                  labelText: "Restaurant ID",
+                  labelText: "restaurant ID",
                 ),
                 onChanged: (value) {},
               ),

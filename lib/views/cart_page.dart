@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/models/Cart.dart';
-import 'package:food_ordering_app/widgets/msgToast.dart';
+import 'package:food_ordering_app/models/cart.dart';
+import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CartPage extends StatelessWidget {

@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:food_ordering_app/models/User.dart';
-import 'package:food_ordering_app/models/UserDetails.dart';
-import 'package:food_ordering_app/widgets/msgToast.dart';
+import 'package:food_ordering_app/models/user.dart';
+import 'package:food_ordering_app/models/user_details.dart';
+import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:http/http.dart' as http;
-import 'package:food_ordering_app/models/ApiError.dart';
-import 'package:food_ordering_app/models/ApiRespose.dart';
+import 'package:food_ordering_app/models/api_error.dart';
+import 'package:food_ordering_app/models/api_response.dart';
 
 class UserServices {
   Future<ApiResponse> details(String userId) async {
@@ -69,8 +69,9 @@ class UserServices {
           _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
           break;
       }
-    } on SocketException {
-      _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+    } catch (e) {
+      // _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+      e.printStackTrace();
     }
     return _apiResponse;
   }

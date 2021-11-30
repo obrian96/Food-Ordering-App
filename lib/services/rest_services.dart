@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:food_ordering_app/models/ApiError.dart';
-import 'package:food_ordering_app/models/ApiRespose.dart';
-import 'package:food_ordering_app/models/Dish.dart';
-import 'package:food_ordering_app/models/DishList.dart';
-import 'package:food_ordering_app/widgets/msgToast.dart';
+import 'package:food_ordering_app/models/api_error.dart';
+import 'package:food_ordering_app/models/api_response.dart';
+import 'package:food_ordering_app/models/dish.dart';
+import 'package:food_ordering_app/models/dish_list.dart';
+import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:http/http.dart' as http;
 
 class RestServices {

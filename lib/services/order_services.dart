@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/models/Ordersmodel.dart';
+import 'package:food_ordering_app/models/orders_model.dart';
 
 
 class OrderServices{

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/models/ApiError.dart';
-import 'package:food_ordering_app/models/ApiRespose.dart';
-import 'package:food_ordering_app/models/DishList.dart';
-import 'package:food_ordering_app/services/RestServices.dart';
+import 'package:food_ordering_app/models/api_error.dart';
+import 'package:food_ordering_app/models/api_response.dart';
+import 'package:food_ordering_app/models/dish_list.dart';
+import 'package:food_ordering_app/services/rest_services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class DashboardLoader extends StatefulWidget {

@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:food_ordering_app/Forms/DishAddForm.dart';
-import 'package:food_ordering_app/models/ApiError.dart';
-import 'package:food_ordering_app/models/ApiRespose.dart';
-import 'package:food_ordering_app/models/DishList.dart';
-import 'package:food_ordering_app/models/UserDetails.dart';
-import 'package:food_ordering_app/services/UserServices.dart';
-import 'package:food_ordering_app/views/Restaurant/AdminCatalogItem.dart';
-import 'package:food_ordering_app/widgets/msgToast.dart';
+import 'package:food_ordering_app/models/api_error.dart';
+import 'package:food_ordering_app/models/api_response.dart';
+import 'package:food_ordering_app/models/dish_list.dart';
+import 'package:food_ordering_app/models/user_details.dart';
+import 'package:food_ordering_app/services/user_services.dart';
+import 'package:food_ordering_app/views/cart_page.dart';
+import 'package:food_ordering_app/views/User/user_catalog_item.dart';
+import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class AdminDashboard extends StatefulWidget {
+class Dashboard extends StatefulWidget {
   @override
-  _AdminDashboardState createState() => _AdminDashboardState();
+  _DashboardState createState() => _DashboardState();
 }
 
-class _AdminDashboardState extends State<AdminDashboard> {
+class _DashboardState extends State<Dashboard> {
+  DishList futDishList;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +43,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
       body: CatalogList(dishList: args),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DishAddForm()));
+         Navigator.push(
+             context, MaterialPageRoute(builder: (context) => CartPage()));
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.shopping_cart),
       ),
     );
   }
@@ -61,10 +66,9 @@ void _ProfileHandler(BuildContext context) async {
     UserServices userServices = new UserServices();
     ApiResponse _apiResponse = await userServices.details(_userId);
     if ((_apiResponse.ApiError as ApiError) == null) {
-      Navigator.pushNamedAndRemoveUntil(
+      Navigator.pushNamed(
         context,
         '/profile',
-        ModalRoute.withName('/profile'),
         arguments: (_apiResponse.Data as UserDetails),
       );
     } else {
@@ -84,12 +88,11 @@ class CatalogList extends StatelessWidget {
   CatalogList({Key key, this.dishList});
   @override
   Widget build(BuildContext context) {
-    return (dishList == null )? "Nothing to show".text.make().centered() :
-    ListView.builder(
+    return (dishList==null)?"Nothing to show".text.xl3.make().centered():ListView.builder(
       shrinkWrap: true,
       itemCount: dishList.length,
       itemBuilder: (context, index) {
-        return CatalogItemAdmin(dish: dishList.getIndex(index));
+        return CatalogItemUser(dish: dishList.getIndex(index));
       },
     );
   }

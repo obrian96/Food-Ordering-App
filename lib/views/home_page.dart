@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:food_ordering_app/animation/FadeAnimation.dart';
-import 'package:food_ordering_app/views/LoginPage.dart';
-import 'package:food_ordering_app/views/SignupPage.dart';
+import 'package:food_ordering_app/animation/fade_animation.dart';
+import 'package:food_ordering_app/views/login_page.dart';
+import 'package:food_ordering_app/views/signup_page.dart';
 
 class HomePage extends StatelessWidget {
   @override

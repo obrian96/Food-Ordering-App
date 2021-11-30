@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/models/Cart.dart';
-import 'package:food_ordering_app/models/Dish.dart';
-import 'package:food_ordering_app/widgets/msgToast.dart';
+import 'package:food_ordering_app/models/cart.dart';
+import 'package:food_ordering_app/models/dish.dart';
+import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:velocity_x/velocity_x.dart';
-import '../../widgets/CatalogImage.dart';
+import '../../widgets/catalog_image.dart';
 
 class CatalogItemUser extends StatelessWidget {
 

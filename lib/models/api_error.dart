@@ -6,6 +6,7 @@ class ApiError {
   }
 
   String get error => _error;
+
   set error(String error) => _error = error;
 
   ApiError.fromJson(Map<String, dynamic> json) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food_ordering_app/models/orders_model.dart';
 import 'package:food_ordering_app/services/order_services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:food_ordering_app/models/orders_model.dart';
 
 class OrderHistoryPage extends StatelessWidget {
   @override
@@ -29,7 +29,6 @@ class OrdersList extends StatefulWidget {
 }
 
 class _OrdersListState extends State<OrdersList> {
-
   OrderServices get service => GetIt.I<OrderServices>();
 
   List<OrdersModel> items = [];
@@ -54,8 +53,6 @@ class _OrdersListState extends State<OrdersList> {
   }
 }
 
-
-
 class OrdersItem extends StatelessWidget {
   final OrdersModel order;
 
@@ -75,13 +72,17 @@ class OrdersItem extends StatelessWidget {
             ).box.rounded.p8.color(Color(0xfff5f5f5)).make().p16().w40(context),
           ),
           Expanded(
-            child : Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 order.title.text.lg.color(Color(0xff403b58)).bold.make(),
                 5.heightBox,
-                "${order.quantity} \× \₹${order.price}".text.color(Color(0xff403b58)).lg.make(),
+                "${order.quantity} \× \₹${order.price}"
+                    .text
+                    .color(Color(0xff403b58))
+                    .lg
+                    .make(),
                 5.heightBox,
                 // ButtonBar(
                 //   alignment: MainAxisAlignment.spaceBetween,
@@ -98,7 +99,6 @@ class OrdersItem extends StatelessWidget {
     );
   }
 }
-
 
 // class RemoveButton extends StatelessWidget {
 //   @override
@@ -120,8 +120,6 @@ class OrdersItem extends StatelessWidget {
 //     );
 //   }
 // }
-
-
 
 // class CartTotal extends StatelessWidget {
 //   @override

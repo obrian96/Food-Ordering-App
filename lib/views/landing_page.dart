@@ -12,7 +12,6 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  String _userId = "";
   @override
   void initState() {
     super.initState();
@@ -31,10 +30,10 @@ class _LandingPageState extends State<LandingPage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
-              print('snapshot.connectionState error');
+              debugPrint('snapshot.connectionState error');
               return Center(
                 child: Text(
-                  '${snapshot.error} occured',
+                  '${snapshot.error} occurred',
                   style: TextStyle(fontSize: 18),
                 ),
               );

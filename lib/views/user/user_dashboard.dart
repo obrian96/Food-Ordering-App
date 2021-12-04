@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/dish_list.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
-import 'package:food_ordering_app/views/cart_page.dart';
 import 'package:food_ordering_app/views/User/user_catalog_item.dart';
+import 'package:food_ordering_app/views/cart_page.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -18,6 +18,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   DishList futDishList;
+
   @override
   void initState() {
     super.initState();
@@ -43,8 +44,8 @@ class _DashboardState extends State<Dashboard> {
       body: CatalogList(dishList: args),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-         Navigator.push(
-             context, MaterialPageRoute(builder: (context) => CartPage()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => CartPage()));
         },
         child: Icon(Icons.shopping_cart),
       ),
@@ -86,14 +87,17 @@ class CatalogList extends StatelessWidget {
   final DishList dishList;
 
   CatalogList({Key key, this.dishList});
+
   @override
   Widget build(BuildContext context) {
-    return (dishList==null)?"Nothing to show".text.xl3.make().centered():ListView.builder(
-      shrinkWrap: true,
-      itemCount: dishList.length,
-      itemBuilder: (context, index) {
-        return CatalogItemUser(dish: dishList.getIndex(index));
-      },
-    );
+    return (dishList == null)
+        ? "Nothing to show".text.xl3.make().centered()
+        : ListView.builder(
+            shrinkWrap: true,
+            itemCount: dishList.length,
+            itemBuilder: (context, index) {
+              return CatalogItemUser(dish: dishList.getIndex(index));
+            },
+          );
   }
 }

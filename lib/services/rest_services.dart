@@ -9,9 +9,12 @@ import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:http/http.dart' as http;
 
 class RestServices {
+  // Server Address
+  static const BASE_URL = 'http://192.168.1.2:3000';
+
   Future<ApiResponse> getDishes() async {
     ApiResponse _apiResponse = new ApiResponse();
-    Uri url = Uri.parse('http://192.168.1.2:3000/dishes');
+    Uri url = Uri.parse(BASE_URL + '/dishes');
     try {
       final http.Response response = await http.get(url);
 
@@ -33,11 +36,12 @@ class RestServices {
     }
     return _apiResponse;
   }
+
   Future<ApiResponse> addDish(String dish_name, int dish_price,
       String dish_type, String restaurant_id) async {
     int isAvailable = 1;
     ApiResponse _apiResponse = new ApiResponse();
-    Uri url = Uri.parse('http://192.168.1.2:3000/dishes');
+    Uri url = Uri.parse(BASE_URL + '/dishes');
     try {
       final http.Response response = await http.post(
         url,
@@ -57,7 +61,7 @@ class RestServices {
       switch (response.statusCode) {
         case 200:
           _apiResponse.Data = Dish.fromJson(json.decode(response.body));
-          msgToast('Dish Add Succesful');
+          msgToast('Dish Add Successful');
           break;
         case 409:
           _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
@@ -74,12 +78,17 @@ class RestServices {
     return _apiResponse;
   }
 
-  Future<ApiResponse> editDish(String dish_name, String dish_price,
-      String isAvailable, String dish_type, String dish_id, String dish_rest_id) async {
+  Future<ApiResponse> editDish(
+      String dish_name,
+      String dish_price,
+      String isAvailable,
+      String dish_type,
+      String dish_id,
+      String dish_rest_id) async {
 //    int isAvailable= 0;
     ApiResponse _apiResponse = new ApiResponse();
     ///////////isko dekho kon sa api hai
-    Uri url = Uri.parse('http://192.168.1.2:3000/dishes/$dish_id');
+    Uri url = Uri.parse(BASE_URL + '/dishes/$dish_id');
     try {
       final http.Response response = await http.put(
         url,
@@ -98,7 +107,7 @@ class RestServices {
       switch (response.statusCode) {
         case 200:
           // _apiResponse.Data = Dish.fromJson(json.decode(response.body));
-          msgToast('Dish Edit Succesful');
+          msgToast('Dish Edit Successful');
           break;
         case 409:
           _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));

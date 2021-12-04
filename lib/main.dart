@@ -17,18 +17,21 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Food Delivery App', routes: {
-      '/': (context) => LandingPage(),
-      '/home': (context) => HomePage(),
-      '/login': (context) => LoginPage(),
-      '/dash': (context) => Dashboard(),
-      '/admindash': (context) => AdminDashboard(),
-      '/profile': (context) => ProfileScreen(),
-      '/loadDash': (context) => DashboardLoader(),
-      '/dishEditForm': (context) => DishEditForm(),
-      '/dishAddForm': (context) => DishAddForm(),
-      '/userDetailsForm': (context) => UserDetailForm(),
-      // '/signup' : (context) => SignupPage(),
-    });
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Food Delivery App',
+        routes: {
+          '/': (context) => LandingPage(),
+          '/home': (context) => HomePage(),
+          '/login': (context) => LoginPage(),
+          '/dash': (context) => Dashboard(),
+          '/adminDash': (context) => AdminDashboard(),
+          '/profile': (context) => ProfileScreen(),
+          '/loadDash': (context) => DashboardLoader(),
+          '/dishEditForm': (context) => DishEditForm(),
+          '/dishAddForm': (context) => DishAddForm(),
+          '/userDetailsForm': (context) => UserDetailForm(),
+          // '/signup' : (context) => SignupPage(),
+        });
   }
 }

@@ -3,10 +3,10 @@ import 'package:food_ordering_app/models/cart.dart';
 import 'package:food_ordering_app/models/dish.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:velocity_x/velocity_x.dart';
+
 import '../../widgets/catalog_image.dart';
 
 class CatalogItemUser extends StatelessWidget {
-
   final Dish dish;
 
   const CatalogItemUser({Key key, @required this.dish})
@@ -41,7 +41,7 @@ class CatalogItemUser extends StatelessWidget {
               buttonPadding: EdgeInsets.zero,
               children: [
                 "\₹${dish.dish_price}".text.xl.bold.make(),
-                AddToCart(dish : dish),
+                AddToCart(dish: dish),
               ],
             ).pOnly(right: 16.0)
           ],
@@ -51,33 +51,29 @@ class CatalogItemUser extends StatelessWidget {
   }
 }
 
-
-
-
 class AddToCart extends StatelessWidget {
-
   final Dish dish;
-  AddToCart( {
-    Key key, this.dish,
+
+  AddToCart({
+    Key key,
+    this.dish,
   }) : super(key: key);
 
   final CartModel _cart = CartModel();
 
   @override
   Widget build(BuildContext context) {
-
     return ElevatedButton(
-      onPressed: (){
-        if(_cart.cart.findItemIndexFromCart(dish.dish_id)==null) {
+      onPressed: () {
+        if (_cart.cart.findItemIndexFromCart(dish.dish_id) == null) {
           CartModel().addToCart(dish);
           msgToast('${dish.dish_name} added in the cart');
-        }
-        else {
-            CartModel().addItemToCart(_cart.cart.findItemIndexFromCart(dish.dish_id));
-            msgToast('${dish.dish_name} added in the cart');
+        } else {
+          CartModel()
+              .addItemToCart(_cart.cart.findItemIndexFromCart(dish.dish_id));
+          msgToast('${dish.dish_name} added in the cart');
         }
       },
-
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(
           Vx.indigo500,

@@ -14,6 +14,7 @@ class Dish {
     this.dish_type,
     this.dish_rest_id,
   );
+
   factory Dish.fromMap(Map<String, dynamic> json) {
     return Dish(
       json['dish_id'],
@@ -24,6 +25,7 @@ class Dish {
       json['dish_rest_id'],
     );
   }
+
   factory Dish.fromJson(Map<String, dynamic> json) {
     return Dish(
       json['dish_id'],

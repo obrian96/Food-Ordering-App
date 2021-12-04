@@ -1,25 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food_ordering_app/animation/fade_animation.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/services/user_services.dart';
-import 'package:food_ordering_app/views/Restaurant/admin_dashboard.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
+import 'package:uuid/uuid.dart';
 
 class SignupPage extends StatelessWidget {
-  TextEditingController cusername = new TextEditingController();
-  TextEditingController cname = new TextEditingController();
-  TextEditingController cpassword = new TextEditingController();
+  TextEditingController cUserId = new TextEditingController();
+  TextEditingController cName = new TextEditingController();
+  TextEditingController cEmail = new TextEditingController();
+  TextEditingController cPassword = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    // Create new uuid object to generate uuid for default user id
+    var uuidObj = Uuid();
+    // Generate uuid from uuid object v4
+    var uuid = uuidObj.v4();
+    // Set first 8 digits of uuid to default user id
+    cUserId.text = uuid.substring(0, 8);
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        brightness: Brightness.light,
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
@@ -31,6 +39,7 @@ class SignupPage extends StatelessWidget {
             color: Colors.black,
           ),
         ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -65,22 +74,29 @@ class SignupPage extends StatelessWidget {
                   FadeAnimation(
                     1.2,
                     makeInput(
-                      label: "Username",
-                      controller_val: cusername,
+                      label: "User ID",
+                      controllerVal: cUserId,
                     ),
                   ),
                   FadeAnimation(
                     1.2,
                     makeInput(
                       label: "Name",
-                      controller_val: cname,
+                      controllerVal: cName,
+                    ),
+                  ),
+                  FadeAnimation(
+                    1.2,
+                    makeInput(
+                      label: "Email",
+                      controllerVal: cEmail,
                     ),
                   ),
                   FadeAnimation(
                       1.3,
                       makeInput(
                           label: "Password",
-                          controller_val: cpassword,
+                          controllerVal: cPassword,
                           obscureText: true)),
                   FadeAnimation(
                     1.4,
@@ -142,7 +158,7 @@ class SignupPage extends StatelessWidget {
     );
   }
 
-  Widget makeInput({label, controller_val, obscureText = false}) {
+  Widget makeInput({label, controllerVal, obscureText = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -155,10 +171,10 @@ class SignupPage extends StatelessWidget {
           height: 5,
         ),
         TextField(
-          controller: controller_val,
+          controller: controllerVal,
           obscureText: obscureText,
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey[400])),
             border: OutlineInputBorder(
@@ -173,22 +189,30 @@ class SignupPage extends StatelessWidget {
   }
 
   void handleSignup(BuildContext context) async {
-    UserServices userServices = new UserServices();
-    ApiResponse _apiResponse = await userServices.signup(
-      cusername.text,
-      cname.text,
-      cpassword.text,
-    );
-
-    print(_apiResponse.ApiError);
-    if ((_apiResponse.ApiError as ApiError) == null) {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/login',
-        ModalRoute.withName('/login'),
+    if (cUserId.text.isNotEmpty &&
+        cName.text.isNotEmpty &&
+        cEmail.text.isNotEmpty &&
+        cPassword.text.isNotEmpty) {
+      UserServices userServices = new UserServices();
+      ApiResponse _apiResponse = await userServices.signup(
+        cUserId.text,
+        cName.text,
+        cEmail.text,
+        cPassword.text,
       );
+
+      print(_apiResponse.ApiError);
+      if ((_apiResponse.ApiError as ApiError) == null) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/login',
+          ModalRoute.withName('/login'),
+        );
+      } else {
+        msgToast("ERROR: " + _apiResponse.ApiError);
+      }
     } else {
-      msgToast("ERROR: " + _apiResponse.ApiError);
+      msgToast("Fields must not empty!");
     }
   }
 }

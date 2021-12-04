@@ -1,7 +1,8 @@
-class OrdersModel{
+class OrdersModel {
   int id;
   String title;
-  double price ;
+  double price;
+
   String image;
   int quantity;
 

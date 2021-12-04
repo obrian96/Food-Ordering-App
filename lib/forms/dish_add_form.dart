@@ -3,8 +3,6 @@ import 'package:food_ordering_app/animation/fade_animation.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/services/rest_services.dart';
-import 'package:food_ordering_app/services/user_services.dart';
-import 'package:food_ordering_app/views/Restaurant/admin_dashboard.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 
 class DishAddForm extends StatefulWidget {
@@ -17,6 +15,7 @@ class _DishAddFormState extends State<DishAddForm> {
   TextEditingController DishName = new TextEditingController();
   TextEditingController DishPrice = new TextEditingController();
   TextEditingController RestaurantID = new TextEditingController();
+
   //int IsAvailable = 0;  String colorGroupValue = '';
   String valueChoose;
   List listItem = ["starter", "main course", "desserts"];

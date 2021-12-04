@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/dish_list.dart';
 import 'package:food_ordering_app/services/rest_services.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class DashboardLoader extends StatefulWidget {
   @override
@@ -12,6 +12,7 @@ class DashboardLoader extends StatefulWidget {
 
 class _DashboardLoaderState extends State<DashboardLoader> {
   int args;
+
   @override
   void initState() {
     super.initState();

@@ -9,8 +9,17 @@ class UserDetails {
   final String user_pass;
   final int isAdmin;
 
-  UserDetails(this.user_id, this.user_email, this.user_phno, this.pincode,
-      this.join_dt, this.user_name, this.user_pass, this.isAdmin, this.user_addr);
+  UserDetails(
+      this.user_id,
+      this.user_email,
+      this.user_phno,
+      this.pincode,
+      this.join_dt,
+      this.user_name,
+      this.user_pass,
+      this.isAdmin,
+      this.user_addr);
+
   factory UserDetails.fromMap(Map<String, dynamic> json) {
     return UserDetails(
       json['user_id'],
@@ -24,6 +33,7 @@ class UserDetails {
       json['user_addr'],
     );
   }
+
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     return UserDetails(
       json['user_id'],

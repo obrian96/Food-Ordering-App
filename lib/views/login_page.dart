@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/services.dart';
 import 'package:food_ordering_app/animation/fade_animation.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
@@ -9,8 +9,9 @@ import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
-  final TextEditingController cusername = new TextEditingController();
-  final TextEditingController cpassword = new TextEditingController();
+  final TextEditingController cUsername = new TextEditingController();
+  final TextEditingController cPassword = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +19,6 @@ class LoginPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        brightness: Brightness.light,
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
@@ -30,6 +30,7 @@ class LoginPage extends StatelessWidget {
             color: Colors.black,
           ),
         ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -70,14 +71,14 @@ class LoginPage extends StatelessWidget {
                           1.2,
                           makeInput(
                             label: "Email",
-                            controller_val: cusername,
+                            controllerVal: cUsername,
                           ),
                         ),
                         FadeAnimation(
                             1.3,
                             makeInput(
                               label: "Password",
-                              controller_val: cpassword,
+                              controllerVal: cPassword,
                               obscureText: true,
                             )),
                       ],
@@ -125,7 +126,6 @@ class LoginPage extends StatelessWidget {
                             "Sign up",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 18),
-
                           ),
                         ],
                       ))
@@ -148,7 +148,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget makeInput({label, controller_val, obscureText = false}) {
+  Widget makeInput({label, controllerVal, obscureText = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -161,7 +161,7 @@ class LoginPage extends StatelessWidget {
           height: 5,
         ),
         TextField(
-          controller: controller_val,
+          controller: controllerVal,
           obscureText: obscureText,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
@@ -181,17 +181,17 @@ class LoginPage extends StatelessWidget {
   void handleSubmitted(BuildContext context) async {
     UserServices userServices = new UserServices();
     ApiResponse _apiResponse =
-        await userServices.login(cusername.text, cpassword.text);
+        await userServices.login(cUsername.text, cPassword.text);
     print(_apiResponse.ApiError);
     if ((_apiResponse.ApiError as ApiError) == null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString("user_id", (_apiResponse.Data as User).user_id);
-      int isadminstored = (_apiResponse.Data as User).isAdmin;
+      int isAdminStored = (_apiResponse.Data as User).isAdmin;
       Navigator.pushNamedAndRemoveUntil(
         context,
         '/loadDash',
         ModalRoute.withName('/loadDash'),
-        arguments: isadminstored,
+        arguments: isAdminStored,
       );
       // }
     } else {

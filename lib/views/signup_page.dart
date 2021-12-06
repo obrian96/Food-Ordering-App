@@ -13,6 +13,7 @@ class SignupPage extends StatelessWidget {
   TextEditingController cName = new TextEditingController();
   TextEditingController cEmail = new TextEditingController();
   TextEditingController cPassword = new TextEditingController();
+  TextEditingController cConfirmPassword = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +71,14 @@ class SignupPage extends StatelessWidget {
                 ],
               ),
               Column(
-                children: <Widget>[
-                  FadeAnimation(
-                    1.2,
-                    makeInput(
-                      label: "User ID",
-                      controllerVal: cUserId,
-                    ),
-                  ),
+                children: [
+                  // FadeAnimation(
+                  //   1.2,
+                  //   makeInput(
+                  //     label: "User ID",
+                  //     controllerVal: cUserId,
+                  //   ),
+                  // ),
                   FadeAnimation(
                     1.2,
                     makeInput(
@@ -93,15 +94,18 @@ class SignupPage extends StatelessWidget {
                     ),
                   ),
                   FadeAnimation(
-                      1.3,
-                      makeInput(
-                          label: "Password",
-                          controllerVal: cPassword,
-                          obscureText: true)),
+                    1.3,
+                    makeInput(
+                      label: "Password",
+                      controllerVal: cPassword,
+                      obscureText: true,
+                    ),
+                  ),
                   FadeAnimation(
                     1.4,
                     makeInput(
                       label: "Confirm Password",
+                      controllerVal: cConfirmPassword,
                       obscureText: true,
                     ),
                   ),
@@ -142,11 +146,16 @@ class SignupPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text("Already have an account?"),
-                      Text(
-                        " Login",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacementNamed(context, '/login');
+                        },
+                        child: Text(
+                          " Login",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ],
@@ -192,7 +201,23 @@ class SignupPage extends StatelessWidget {
     if (cUserId.text.isNotEmpty &&
         cName.text.isNotEmpty &&
         cEmail.text.isNotEmpty &&
-        cPassword.text.isNotEmpty) {
+        cPassword.text.isNotEmpty &&
+        cConfirmPassword.text.isNotEmpty) {
+      if (!RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+          .hasMatch(cEmail.text)) {
+        msgToast("Invalid email!");
+        return;
+      }
+
+      if (cPassword.text.length < 8) {
+        msgToast("Password length must be longer than 8 digits!");
+        return;
+      } else if (cPassword.text != cConfirmPassword.text) {
+        msgToast("Password does not matched!");
+        return;
+      }
+
       UserServices userServices = new UserServices();
       ApiResponse _apiResponse = await userServices.signup(
         cUserId.text,
@@ -203,13 +228,10 @@ class SignupPage extends StatelessWidget {
 
       print(_apiResponse.ApiError);
       if ((_apiResponse.ApiError as ApiError) == null) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          '/login',
-          ModalRoute.withName('/login'),
-        );
+        Navigator.pop(context);
       } else {
-        msgToast("ERROR: " + _apiResponse.ApiError);
+        var errorObj = _apiResponse.ApiError as ApiError;
+        msgToast(errorObj.error);
       }
     } else {
       msgToast("Fields must not empty!");

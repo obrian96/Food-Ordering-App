@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_ordering_app/animation/fade_animation.dart';
@@ -9,7 +11,7 @@ import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
-  final TextEditingController cUsername = new TextEditingController();
+  final TextEditingController cEmail = new TextEditingController();
   final TextEditingController cPassword = new TextEditingController();
 
   @override
@@ -71,7 +73,7 @@ class LoginPage extends StatelessWidget {
                           1.2,
                           makeInput(
                             label: "Email",
-                            controllerVal: cUsername,
+                            controllerVal: cEmail,
                           ),
                         ),
                         FadeAnimation(
@@ -122,10 +124,16 @@ class LoginPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text("Don't have an account?"),
-                          Text(
-                            "Sign up",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 18),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacementNamed(
+                                  context, '/signup');
+                            },
+                            child: Text(
+                              " Sign up",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 18),
+                            ),
                           ),
                         ],
                       ))
@@ -179,23 +187,41 @@ class LoginPage extends StatelessWidget {
   }
 
   void handleSubmitted(BuildContext context) async {
-    UserServices userServices = new UserServices();
-    ApiResponse _apiResponse =
-        await userServices.login(cUsername.text, cPassword.text);
-    print(_apiResponse.ApiError);
-    if ((_apiResponse.ApiError as ApiError) == null) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString("user_id", (_apiResponse.Data as User).user_id);
-      int isAdminStored = (_apiResponse.Data as User).isAdmin;
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/loadDash',
-        ModalRoute.withName('/loadDash'),
-        arguments: isAdminStored,
-      );
-      // }
+    if (cEmail.text.isNotEmpty && cPassword.text.isNotEmpty) {
+      if (!RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+          .hasMatch(cEmail.text)) {
+        msgToast("Invalid email!");
+        return;
+      }
+
+      if (cPassword.text.length < 8) {
+        msgToast("Wrong password!");
+        return;
+      }
+
+      UserServices userServices = new UserServices();
+      ApiResponse _apiResponse =
+          await userServices.login(cEmail.text, cPassword.text);
+      // print(_apiResponse.ApiError);
+      developer.log(_apiResponse.ApiError.toString(), name: 'login_page.dart');
+      if (_apiResponse != null && (_apiResponse.ApiError as ApiError) == null) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("user_id", (_apiResponse.data as User).user_id);
+        int isAdminStored = (_apiResponse.data as User).isAdmin;
+        Navigator.pushReplacementNamed(
+          context,
+          '/loadDash',
+          arguments: isAdminStored,
+        );
+        // }
+      } else {
+        var errorObj = _apiResponse.ApiError as ApiError;
+        msgToast(errorObj.error);
+        developer.log('Server response is null', name: 'login_page.dart');
+      }
     } else {
-      msgToast("ERROR: " + _apiResponse.ApiError);
+      msgToast("Fields must not empty!");
     }
   }
 }

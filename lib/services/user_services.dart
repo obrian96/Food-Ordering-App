@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/user.dart';
@@ -28,7 +29,7 @@ class UserServices {
 
       switch (response.statusCode) {
         case 200:
-          _apiResponse.Data = UserDetails.fromJson(json.decode(response.body));
+          _apiResponse.data = UserDetails.fromJson(json.decode(response.body));
           break;
         case 401:
           print((_apiResponse.ApiError as ApiError).error);
@@ -63,8 +64,8 @@ class UserServices {
 
       switch (response.statusCode) {
         case 200:
-          _apiResponse.Data = User.fromJson(json.decode(response.body));
-          msgToast('login Successful');
+          _apiResponse.data = User.fromJson(json.decode(response.body));
+          msgToast('Login Successful');
           break;
         case 401:
           _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
@@ -75,7 +76,7 @@ class UserServices {
       }
     } catch (e) {
       // _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
-      e.printStackTrace();
+      debugPrint("Debug Log: " + e.toString());
     }
     return _apiResponse;
   }
@@ -102,8 +103,8 @@ class UserServices {
 
       switch (response.statusCode) {
         case 200:
-          _apiResponse.Data = User.fromJson(json.decode(response.body));
-          msgToast('SignUp Succesful');
+          _apiResponse.data = User.fromJson(json.decode(response.body));
+          msgToast('SignUp Successful');
           break;
         case 409:
           _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
@@ -142,8 +143,8 @@ class UserServices {
 
       switch (response.statusCode) {
         case 200:
-          _apiResponse.Data = User.fromJson(json.decode(response.body));
-          msgToast('Dish Edit Succesful');
+          _apiResponse.data = User.fromJson(json.decode(response.body));
+          msgToast('Dish Edit Successful');
           break;
         case 409:
           _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));

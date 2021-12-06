@@ -25,7 +25,7 @@ class _DashboardLoaderState extends State<DashboardLoader> {
     print(_apiResponse.ApiError);
     DishList dishList;
     if ((_apiResponse.ApiError as ApiError) == null) {
-      dishList = (_apiResponse.Data as DishList);
+      dishList = (_apiResponse.data as DishList);
     }
     if (args == 1) {
       Navigator.pushNamed(

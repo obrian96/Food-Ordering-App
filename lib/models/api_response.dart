@@ -6,9 +6,9 @@ class ApiResponse {
   // _apiError will hold the error object
   Object _apiError;
 
-  Object get Data => _data;
+  Object get data => _data;
 
-  set Data(Object data) => _data = data;
+  set data(Object data) => _data = data;
 
   Object get ApiError => _apiError as Object;
 

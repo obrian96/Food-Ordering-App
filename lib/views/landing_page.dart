@@ -13,16 +13,6 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   @override
-  void initState() {
-    super.initState();
-    // _loadUserInfo();
-  }
-
-  @override
-  // Widget build(BuildCon text context) {
-  //   return Scaffold(body: Center(child: CircularProgressIndicator()));
-  // }
-
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
@@ -40,7 +30,7 @@ class _LandingPageState extends State<LandingPage> {
             } else if (snapshot.hasData) {
               final userDetails = snapshot.data as UserDetails;
               return Stack(
-                children: <Widget>[
+                children: [
                   ClipPath(
                     child: Container(color: Color(0xfffeb324)),
                     clipper: GetClipper(),
@@ -98,10 +88,9 @@ class _LandingPageState extends State<LandingPage> {
                             elevation: 7.0,
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.pushNamedAndRemoveUntil(
+                                Navigator.pushReplacementNamed(
                                   context,
                                   '/loadDash',
-                                  ModalRoute.withName('/loadDash'),
                                   arguments: userDetails.isAdmin,
                                 );
                               },
@@ -158,38 +147,27 @@ class _LandingPageState extends State<LandingPage> {
   Future<UserDetails> _getDetails(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String _userId = (prefs.getString("user_id") ?? "");
-    if (_userId == "") {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/home',
-        ModalRoute.withName('/home'),
-      );
+    if (_userId.isEmpty) {
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
       UserServices userServices = new UserServices();
       ApiResponse _apiResponse = await userServices.details(_userId);
       if ((_apiResponse.ApiError as ApiError) == null) {
-        return _apiResponse.Data as UserDetails;
+        return _apiResponse.data as UserDetails;
       } else {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.remove('user_id');
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          '/home',
-          ModalRoute.withName('/home'),
-        );
+        Navigator.pushReplacementNamed(context, '/home');
         msgToast("invalid Login State!");
       }
     }
+    return null;
   }
 
   void _logoutHandler(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('user_id');
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      '/home',
-      ModalRoute.withName('/home'),
-    );
+    Navigator.pushReplacementNamed(context, '/home');
     msgToast("Logged Out!");
   }
 }

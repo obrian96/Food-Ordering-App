@@ -12,9 +12,9 @@ class DishAddForm extends StatefulWidget {
 
 class _DishAddFormState extends State<DishAddForm> {
   // TextEditingController DishID=new TextEditingController();
-  TextEditingController DishName = new TextEditingController();
-  TextEditingController DishPrice = new TextEditingController();
-  TextEditingController RestaurantID = new TextEditingController();
+  TextEditingController dishName = new TextEditingController();
+  TextEditingController dishPrice = new TextEditingController();
+  TextEditingController restaurantID = new TextEditingController();
 
   //int IsAvailable = 0;  String colorGroupValue = '';
   String valueChoose;
@@ -76,7 +76,7 @@ class _DishAddFormState extends State<DishAddForm> {
             // ),
             Card(
               child: TextField(
-                controller: DishName,
+                controller: dishName,
                 style: TextStyle(
                   color: Colors.black,
                 ),
@@ -91,7 +91,7 @@ class _DishAddFormState extends State<DishAddForm> {
             ),
             Card(
               child: TextField(
-                controller: DishPrice,
+                controller: dishPrice,
                 style: TextStyle(
                   color: Colors.black,
                 ),
@@ -164,7 +164,7 @@ class _DishAddFormState extends State<DishAddForm> {
             ),
             Card(
               child: TextField(
-                controller: RestaurantID,
+                controller: restaurantID,
                 style: TextStyle(
                   color: Colors.black,
                 ),
@@ -204,10 +204,10 @@ class _DishAddFormState extends State<DishAddForm> {
     RestServices restServices = new RestServices();
     ApiResponse _apiResponse = await restServices.addDish(
       // DishID.text,
-      DishName.text,
-      int.parse(DishPrice.text),
+      dishName.text,
+      int.parse(dishPrice.text),
       valueChoose,
-      RestaurantID.text,
+      restaurantID.text,
     );
 
     if ((_apiResponse.ApiError as ApiError) == null) {

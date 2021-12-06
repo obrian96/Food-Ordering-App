@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-import 'forms/dish_add_form.dart';
-import 'forms/dish_edit_form.dart';
-import 'forms/user_detail_form.dart';
-import 'views/dashboard_loader.dart';
-import 'views/home_page.dart';
-import 'views/landing_page.dart';
-import 'views/login_page.dart';
-import 'views/profile_page.dart';
-import 'views/restaurant/admin_dashboard.dart';
-import 'views/user/user_dashboard.dart';
+import 'package:food_ordering_app/forms/dish_add_form.dart';
+import 'package:food_ordering_app/forms/dish_edit_form.dart';
+import 'package:food_ordering_app/forms/user_detail_form.dart';
+import 'package:food_ordering_app/views/dashboard_loader.dart';
+import 'package:food_ordering_app/views/home_page.dart';
+import 'package:food_ordering_app/views/landing_page.dart';
+import 'package:food_ordering_app/views/login_page.dart';
+import 'package:food_ordering_app/views/profile_page.dart';
+import 'package:food_ordering_app/views/restaurant/admin_dashboard.dart';
+import 'package:food_ordering_app/views/signup_page.dart';
+import 'package:food_ordering_app/views/user/user_dashboard.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,17 +21,17 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Food Delivery App',
         routes: {
-          '/': (context) => LandingPage(),
-          '/home': (context) => HomePage(),
-          '/login': (context) => LoginPage(),
-          '/dash': (context) => Dashboard(),
-          '/adminDash': (context) => AdminDashboard(),
-          '/profile': (context) => ProfileScreen(),
+          '/': (context) => LandingPage(), // Launcher page
+          '/home': (context) => HomePage(), // Home page
+          '/login': (context) => LoginPage(), // Login page
+          '/signup': (context) => SignupPage(), // Sign up page
+          '/dash': (context) => Dashboard(), // Dashboard
+          '/adminDash': (context) => AdminDashboard(), // Admin dashboard
+          '/profile': (context) => ProfileScreen(), // Profile page
           '/loadDash': (context) => DashboardLoader(),
           '/dishEditForm': (context) => DishEditForm(),
           '/dishAddForm': (context) => DishAddForm(),
           '/userDetailsForm': (context) => UserDetailForm(),
-          // '/signup' : (context) => SignupPage(),
         });
   }
 }

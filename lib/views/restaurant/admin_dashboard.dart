@@ -64,7 +64,7 @@ void _ProfileHandler(BuildContext context) async {
         context,
         '/profile',
         ModalRoute.withName('/profile'),
-        arguments: (_apiResponse.Data as UserDetails),
+        arguments: (_apiResponse.data as UserDetails),
       );
     } else {
       Navigator.pushNamedAndRemoveUntil(

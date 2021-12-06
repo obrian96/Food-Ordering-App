@@ -20,7 +20,7 @@ class RestServices {
 
       switch (response.statusCode) {
         case 200:
-          _apiResponse.Data = DishList.fromJson(json.decode(response.body));
+          _apiResponse.data = DishList.fromJson(json.decode(response.body));
           break;
         case 401:
           _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
@@ -60,7 +60,7 @@ class RestServices {
 
       switch (response.statusCode) {
         case 200:
-          _apiResponse.Data = Dish.fromJson(json.decode(response.body));
+          _apiResponse.data = Dish.fromJson(json.decode(response.body));
           msgToast('Dish Add Successful');
           break;
         case 409:

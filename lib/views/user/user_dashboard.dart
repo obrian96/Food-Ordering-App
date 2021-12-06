@@ -70,7 +70,7 @@ void _ProfileHandler(BuildContext context) async {
       Navigator.pushNamed(
         context,
         '/profile',
-        arguments: (_apiResponse.Data as UserDetails),
+        arguments: (_apiResponse.data as UserDetails),
       );
     } else {
       Navigator.pushNamedAndRemoveUntil(

@@ -10,11 +10,11 @@ class DishEditForm extends StatefulWidget {
 }
 
 class _DishEditFormState extends State<DishEditForm> {
-  TextEditingController DishName = new TextEditingController();
-  TextEditingController DishPrice = new TextEditingController();
-  TextEditingController RestaurantId = new TextEditingController();
+  TextEditingController dishName = new TextEditingController();
+  TextEditingController dishPrice = new TextEditingController();
+  TextEditingController restaurantId = new TextEditingController();
 
-  int IsAvailable;
+  int isAvailable;
   String colorGroupValue = '';
   String valueChoose;
   List listItem = ['starter', 'main course', 'dessert', 'snack', 'beverage'];
@@ -36,7 +36,7 @@ class _DishEditFormState extends State<DishEditForm> {
           children: <Widget>[
             Card(
               child: TextField(
-                controller: DishName,
+                controller: dishName,
                 style: TextStyle(
                   color: Colors.black,
                 ),
@@ -51,7 +51,7 @@ class _DishEditFormState extends State<DishEditForm> {
             ),
             Card(
               child: TextField(
-                controller: DishPrice,
+                controller: dishPrice,
                 style: TextStyle(
                   color: Colors.black,
                 ),
@@ -75,7 +75,7 @@ class _DishEditFormState extends State<DishEditForm> {
                     groupValue: colorGroupValue,
                     onChanged: (val) {
                       colorGroupValue = val;
-                      IsAvailable = 1;
+                      isAvailable = 1;
                       setState(() {});
                     }),
                 SizedBox(
@@ -87,7 +87,7 @@ class _DishEditFormState extends State<DishEditForm> {
                     groupValue: colorGroupValue,
                     onChanged: (val) {
                       colorGroupValue = val;
-                      IsAvailable = 0;
+                      isAvailable = 0;
                       setState(() {});
                     }),
               ],
@@ -121,7 +121,7 @@ class _DishEditFormState extends State<DishEditForm> {
             ),
             Card(
               child: TextField(
-                controller: RestaurantId,
+                controller: restaurantId,
                 style: TextStyle(
                   color: Colors.black,
                 ),
@@ -168,12 +168,12 @@ class _DishEditFormState extends State<DishEditForm> {
   void handleDishEdit(BuildContext context, int args) async {
     RestServices restServices = new RestServices();
     ApiResponse _apiResponse = await restServices.editDish(
-      DishName.text,
-      DishPrice.text,
-      IsAvailable.toString(),
+      dishName.text,
+      dishPrice.text,
+      isAvailable.toString(),
       valueChoose,
       args.toString(),
-      RestaurantId.text,
+      restaurantId.text,
     );
 
     print(_apiResponse.ApiError);

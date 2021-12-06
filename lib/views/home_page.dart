@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:food_ordering_app/animation/fade_animation.dart';
-import 'package:food_ordering_app/views/login_page.dart';
-import 'package:food_ordering_app/views/signup_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -54,10 +52,7 @@ class HomePage extends StatelessWidget {
                         minWidth: double.infinity,
                         height: 60,
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage()));
+                          Navigator.pushNamed(context, '/login');
                         },
                         shape: RoundedRectangleBorder(
                             side: BorderSide(color: Colors.black),
@@ -87,10 +82,7 @@ class HomePage extends StatelessWidget {
                           minWidth: double.infinity,
                           height: 60,
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignupPage()));
+                            Navigator.pushNamed(context, '/signup');
                           },
                           color: Colors.yellow,
                           elevation: 0,

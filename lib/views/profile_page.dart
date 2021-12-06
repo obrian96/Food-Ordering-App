@@ -11,6 +11,7 @@ class ProfileScreen extends StatelessWidget {
         ModalRoute.of(context).settings.arguments as UserDetails;
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Color(0xff212121),
         body: SafeArea(
@@ -19,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
           children: <Widget>[
             CircleAvatar(
               radius: 50.0,
-              backgroundImage: AssetImage('assets/nirala.jpeg'),
+              backgroundImage: AssetImage('assets/profile_placeholder.png'),
             ),
             SizedBox(
               height: 20.0,

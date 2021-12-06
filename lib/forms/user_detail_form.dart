@@ -11,11 +11,11 @@ class UserDetailForm extends StatefulWidget {
 }
 
 class _UserDetailFormState extends State<UserDetailForm> {
-  TextEditingController UserID = new TextEditingController();
-  TextEditingController Email = new TextEditingController();
-  TextEditingController Phone = new TextEditingController();
-  TextEditingController Address = new TextEditingController();
-  TextEditingController Pincode = new TextEditingController();
+  TextEditingController userID = new TextEditingController();
+  TextEditingController email = new TextEditingController();
+  TextEditingController phone = new TextEditingController();
+  TextEditingController address = new TextEditingController();
+  TextEditingController pincode = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _UserDetailFormState extends State<UserDetailForm> {
           children: <Widget>[
             Card(
               child: TextField(
-                controller: UserID,
+                controller: userID,
                 style: TextStyle(
                   color: Colors.black,
                 ),
@@ -62,7 +62,7 @@ class _UserDetailFormState extends State<UserDetailForm> {
 
             Card(
               child: TextField(
-                controller: Email,
+                controller: email,
                 style: TextStyle(
                   color: Colors.black,
                 ),
@@ -78,7 +78,7 @@ class _UserDetailFormState extends State<UserDetailForm> {
 
             Card(
               child: TextField(
-                controller: Phone,
+                controller: phone,
                 style: TextStyle(
                   color: Colors.black,
                 ),
@@ -94,7 +94,7 @@ class _UserDetailFormState extends State<UserDetailForm> {
 
             Card(
               child: TextField(
-                controller: Address,
+                controller: address,
                 style: TextStyle(
                   color: Colors.black,
                 ),
@@ -109,7 +109,7 @@ class _UserDetailFormState extends State<UserDetailForm> {
             ),
             Card(
               child: TextField(
-                controller: Pincode,
+                controller: pincode,
                 style: TextStyle(
                   color: Colors.black,
                 ),
@@ -150,7 +150,7 @@ class _UserDetailFormState extends State<UserDetailForm> {
   void handleDetails(BuildContext context) async {
     UserServices userServices = new UserServices();
     ApiResponse _apiResponse = await userServices.user_detail_form(
-        UserID.text, Email.text, Phone.text, Address.text, Pincode.text);
+        userID.text, email.text, phone.text, address.text, pincode.text);
 
     print(_apiResponse.ApiError);
     if ((_apiResponse.ApiError as ApiError) == null) {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
+import 'package:food_ordering_app/util/logcat.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,6 +14,8 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  static const String TAG = 'landing_page.dart';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +24,7 @@ class _LandingPageState extends State<LandingPage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
-              debugPrint('snapshot.connectionState error');
+              Log.e(TAG, '1) ${snapshot.error}');
               return Center(
                 child: Text(
                   '${snapshot.error} occurred',
@@ -46,9 +50,8 @@ class _LandingPageState extends State<LandingPage> {
                           decoration: BoxDecoration(
                               color: Color(0xfffeb324),
                               image: DecorationImage(
-                                image: NetworkImage(
-                                  'https://image.flaticon.com/icons/png/512/219/219970.png',
-                                ),
+                                image: AssetImage(
+                                    'assets/profile_placeholder.png'),
                                 fit: BoxFit.cover,
                               ),
                               borderRadius:
@@ -78,57 +81,43 @@ class _LandingPageState extends State<LandingPage> {
                           ),
                         ),
                         SizedBox(height: 40.0),
-                        Container(
-                          height: 40.0,
-                          width: 250.0,
-                          child: Material(
-                            borderRadius: BorderRadius.circular(20.0),
-                            shadowColor: Color(0xfffeb324),
-                            color: Color(0xfffeb324),
-                            elevation: 7.0,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pushReplacementNamed(
-                                  context,
-                                  '/loadDash',
-                                  arguments: userDetails.isAdmin,
-                                );
-                              },
-                              child: Center(
-                                  child: Text(
-                                'Continue',
-                                style: TextStyle(
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              )),
+                        FloatingActionButton.extended(
+                          backgroundColor: const Color(0xfffeb324),
+                          foregroundColor: Colors.black,
+                          splashColor: const Color(0xfffdd835),
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                              context,
+                              '/loadDash',
+                              arguments: userDetails.isAdmin,
+                            );
+                          },
+                          label: Text(
+                            '        Continue        ',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
                           ),
                         ),
                         SizedBox(height: 40.0),
-                        Container(
-                          height: 40.0,
-                          width: 250.0,
-                          child: Material(
-                            borderRadius: BorderRadius.circular(20.0),
-                            shadowColor: Color(0xfffeb324),
-                            color: Color(0xfffeb324),
-                            elevation: 7.0,
-                            child: GestureDetector(
-                              onTap: () {
-                                _logoutHandler(context);
-                              },
-                              child: Center(
-                                  child: Text(
-                                'Log Out',
-                                style: TextStyle(
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              )),
+                        FloatingActionButton.extended(
+                          backgroundColor: const Color(0xfffeb324),
+                          foregroundColor: Colors.black,
+                          splashColor: const Color(0xfffdd835),
+                          onPressed: () {
+                            _logoutHandler(context);
+                          },
+                          label: Text(
+                            '         Log Out         ',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   )
@@ -152,6 +141,7 @@ class _LandingPageState extends State<LandingPage> {
     } else {
       UserServices userServices = new UserServices();
       ApiResponse _apiResponse = await userServices.details(_userId);
+      // Log.e(TAG, '2) ' + (_apiResponse.ApiError as ApiError).error);
       if ((_apiResponse.ApiError as ApiError) == null) {
         return _apiResponse.data as UserDetails;
       } else {

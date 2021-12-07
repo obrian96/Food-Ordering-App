@@ -28,13 +28,13 @@ class _DashboardLoaderState extends State<DashboardLoader> {
       dishList = (_apiResponse.data as DishList);
     }
     if (args == 1) {
-      Navigator.pushNamed(
+      Navigator.pushReplacementNamed(
         context,
-        '/admindash',
+        '/adminDash',
         arguments: dishList,
       );
     } else {
-      Navigator.pushNamed(
+      Navigator.pushReplacementNamed(
         context,
         '/dash',
         arguments: dishList,

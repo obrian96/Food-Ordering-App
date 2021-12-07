@@ -26,7 +26,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         leading: new IconButton(
           icon: new Icon(Icons.account_circle),
           onPressed: () {
-            _ProfileHandler(context);
+            _profileHandler(context);
           },
         ),
         title: new Text("Swiggato - DashBoard"),
@@ -46,24 +46,19 @@ class _AdminDashboardState extends State<AdminDashboard> {
   }
 }
 
-void _ProfileHandler(BuildContext context) async {
+void _profileHandler(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String _userId = (prefs.getString("user_id") ?? "");
   if (_userId == "") {
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      '/home',
-      ModalRoute.withName('/home'),
-    );
+    Navigator.pushReplacementNamed(context, '/home');
     msgToast("invalid Login State!");
   } else {
     UserServices userServices = new UserServices();
     ApiResponse _apiResponse = await userServices.details(_userId);
     if ((_apiResponse.ApiError as ApiError) == null) {
-      Navigator.pushNamedAndRemoveUntil(
+      Navigator.pushNamed(
         context,
         '/profile',
-        ModalRoute.withName('/profile'),
         arguments: (_apiResponse.data as UserDetails),
       );
     } else {

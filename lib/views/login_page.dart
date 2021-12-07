@@ -209,9 +209,11 @@ class LoginPage extends StatelessWidget {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString("user_id", (_apiResponse.data as User).user_id);
         int isAdminStored = (_apiResponse.data as User).isAdmin;
-        Navigator.pushReplacementNamed(
+        // Push this named route and remove all previous routes
+        Navigator.pushNamedAndRemoveUntil(
           context,
           '/loadDash',
+          (Route<dynamic> route) => false, // Remove all previous routes
           arguments: isAdminStored,
         );
         // }

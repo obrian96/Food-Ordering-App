@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/user.dart';
 import 'package:food_ordering_app/models/user_details.dart';
+import 'package:food_ordering_app/util/logcat.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,10 +13,14 @@ class UserServices {
   // Server Address
   static const BASE_URL = 'http://192.168.1.2:3000';
 
+  static const TAG = 'user_services.dart';
+  static int detailsTryCount = 0;
+
   Future<ApiResponse> details(String userId) async {
     ApiResponse _apiResponse = new ApiResponse();
     Uri url = Uri.parse(BASE_URL + '/userdetails');
     try {
+      detailsTryCount++;
       final http.Response response = await http.post(
         url,
         headers: <String, String>{
@@ -32,15 +36,19 @@ class UserServices {
           _apiResponse.data = UserDetails.fromJson(json.decode(response.body));
           break;
         case 401:
-          print((_apiResponse.ApiError as ApiError).error);
+          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          break;
+        case 403:
           _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
           break;
         default:
-          print((_apiResponse.ApiError as ApiError).error);
+          Log.e(TAG, '${response}');
           _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
           break;
       }
-    } on SocketException {
+    } catch (e) {
+      Log.e(TAG,
+          'Repeated [' + detailsTryCount.toString() + ']: ' + e?.toString());
       _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
     }
     return _apiResponse;
@@ -76,7 +84,7 @@ class UserServices {
       }
     } catch (e) {
       // _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
-      debugPrint("Debug Log: " + e.toString());
+      Log.e(TAG, "Debug Log: " + e.toString());
     }
     return _apiResponse;
   }
@@ -115,7 +123,7 @@ class UserServices {
       }
     } /* on SocketException */ catch (e) {
       // _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
-      print(e);
+      Log.e(TAG, e);
     }
     return _apiResponse;
   }

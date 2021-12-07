@@ -228,7 +228,11 @@ class SignupPage extends StatelessWidget {
 
       print(_apiResponse.ApiError);
       if ((_apiResponse.ApiError as ApiError) == null) {
-        Navigator.pop(context);
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/login',
+          ModalRoute.withName('/home'),
+        );
       } else {
         var errorObj = _apiResponse.ApiError as ApiError;
         msgToast(errorObj.error);

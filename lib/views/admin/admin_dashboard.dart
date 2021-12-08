@@ -55,7 +55,7 @@ void _profileHandler(BuildContext context) async {
   } else {
     UserServices userServices = new UserServices();
     ApiResponse _apiResponse = await userServices.details(_userId);
-    if ((_apiResponse.ApiError as ApiError) == null) {
+    if ((_apiResponse.apiError as ApiError) == null) {
       Navigator.pushNamed(
         context,
         '/profile',

@@ -142,7 +142,7 @@ class _LandingPageState extends State<LandingPage> {
       UserServices userServices = new UserServices();
       ApiResponse _apiResponse = await userServices.details(_userId);
       // Log.e(TAG, '2) ' + (_apiResponse.ApiError as ApiError).error);
-      if ((_apiResponse.ApiError as ApiError) == null) {
+      if ((_apiResponse.apiError as ApiError) == null) {
         return _apiResponse.data as UserDetails;
       } else {
         SharedPreferences prefs = await SharedPreferences.getInstance();

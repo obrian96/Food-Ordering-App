@@ -16,7 +16,7 @@ class CatalogItemAdmin extends StatelessWidget {
         child: Row(
       children: [
         Hero(
-          tag: Key(dish.dish_id.toString()),
+          tag: Key(dish.dishId.toString()),
           child: CatalogImage(
             image:
                 "https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900",
@@ -27,8 +27,8 @@ class CatalogItemAdmin extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            dish.dish_name.text.lg.color(Color(0xff403b58)).bold.make(),
-            dish.dish_type.text
+            dish.dishName.text.lg.color(Color(0xff403b58)).bold.make(),
+            dish.dishType.text
                 .textStyle(context.captionStyle)
                 .color(Color(0xff403b58))
                 .make(),
@@ -37,8 +37,8 @@ class CatalogItemAdmin extends StatelessWidget {
               alignment: MainAxisAlignment.spaceBetween,
               buttonPadding: EdgeInsets.zero,
               children: [
-                "\₹${dish.dish_price}".text.xl.bold.make(),
-                EditButton(dish.dish_id),
+                "\₹${dish.dishPrice}".text.xl.bold.make(),
+                EditButton(dish.dishId),
               ],
             ).pOnly(right: 16.0)
           ],

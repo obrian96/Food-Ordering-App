@@ -204,8 +204,8 @@ class LoginPage extends StatelessWidget {
       ApiResponse _apiResponse =
           await userServices.login(cEmail.text, cPassword.text);
       // print(_apiResponse.ApiError);
-      developer.log(_apiResponse.ApiError.toString(), name: 'login_page.dart');
-      if (_apiResponse != null && (_apiResponse.ApiError as ApiError) == null) {
+      developer.log(_apiResponse.apiError.toString(), name: 'login_page.dart');
+      if (_apiResponse != null && (_apiResponse.apiError as ApiError) == null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString("user_id", (_apiResponse.data as User).user_id);
         int isAdminStored = (_apiResponse.data as User).isAdmin;
@@ -218,7 +218,7 @@ class LoginPage extends StatelessWidget {
         );
         // }
       } else {
-        var errorObj = _apiResponse.ApiError as ApiError;
+        var errorObj = _apiResponse.apiError as ApiError;
         msgToast(errorObj.error);
         developer.log('Server response is null', name: 'login_page.dart');
       }

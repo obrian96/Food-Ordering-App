@@ -63,7 +63,7 @@ class __CartListState extends State<_CartList> {
                   });
                   //widget.update();
                   msgToast(
-                      '${_cart.cart.cartItem[index].productDetails.dish_name} removed from the cart');
+                      '${_cart.cart.cartItem[index].productDetails.dishName} removed from the cart');
                 },
               ),
               trailing:
@@ -72,7 +72,7 @@ class __CartListState extends State<_CartList> {
                       .lg
                       .color(Color(0xff403b58))
                       .make(),
-              title: '${_cart.cart.cartItem[index].productDetails.dish_name}'
+              title: '${_cart.cart.cartItem[index].productDetails.dishName}'
                   .text
                   .color(Color(0xff403b58))
                   .make(),

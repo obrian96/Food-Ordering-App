@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:food_ordering_app/models/api_error.dart';
+import 'package:food_ordering_app/models/api_response.dart';
+import 'package:food_ordering_app/models/user_details.dart';
+import 'package:food_ordering_app/services/user_services.dart';
+import 'package:food_ordering_app/views/cart_page.dart';
+import 'package:food_ordering_app/views/profile_page.dart';
 import 'package:food_ordering_app/views/user/pages/order_history.dart';
-import 'package:food_ordering_app/views/user/pages/user_dashboard.dart';
-
-import '../cart_page.dart';
-import '../profile_page.dart';
+import 'package:food_ordering_app/widgets/msg_toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   final padding = EdgeInsets.symmetric(horizontal: 20);
@@ -18,22 +22,27 @@ class NavigationDrawerWidget extends StatelessWidget {
               constraints: BoxConstraints(minHeight: constraint.maxHeight),
               child: IntrinsicHeight(
                 child: Column(
-                  children: <Widget>[
+                  children: [
                     DrawerHeader(
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                  "assets/app-logo-62-removebg-preview-square.png"),
-                              fit: BoxFit.cover)),
-                      margin: EdgeInsets.all(0.0),
+                        image: DecorationImage(
+                          image: AssetImage(
+                            "assets/app-logo-62-removebg-preview-square.png",
+                          ),
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                      child: null,
                     ),
                     ListTile(
                       leading: Icon(Icons.home),
                       title: Text("Home"),
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Dashboard(),
-                        ));
+                        Navigator.pop(context);
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //   builder: (context) => Dashboard(),
+                        // ));
                       },
                     ),
                     new ListTile(
@@ -62,12 +71,13 @@ class NavigationDrawerWidget extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.account_box),
+                      leading: Icon(Icons.account_circle_rounded),
                       title: Text("View Profile"),
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ProfileScreen(),
-                        ));
+                        _profileHandler(context);
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //   builder: (context) => ProfileScreen(),
+                        // ));
                       },
                     ),
                     const Expanded(child: SizedBox()),
@@ -87,5 +97,35 @@ class NavigationDrawerWidget extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+void _profileHandler(BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String _userId = (prefs.getString("user_id") ?? "");
+  if (_userId == "") {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/home',
+      ModalRoute.withName('/home'),
+    );
+    msgToast("invalid Login State!");
+  } else {
+    UserServices userServices = new UserServices();
+    ApiResponse _apiResponse = await userServices.details(_userId);
+    if ((_apiResponse.apiError as ApiError) == null) {
+      Navigator.pushNamed(
+        context,
+        '/profile',
+        arguments: (_apiResponse.data as UserDetails),
+      );
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/home',
+        ModalRoute.withName('/home'),
+      );
+      msgToast("invalid Login State!");
+    }
   }
 }

@@ -5,15 +5,18 @@ import 'package:food_ordering_app/animation/fade_animation.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/services/user_services.dart';
+import 'package:food_ordering_app/util/logcat.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:uuid/uuid.dart';
 
-class SignupPage extends StatelessWidget {
-  TextEditingController cUserId = new TextEditingController();
-  TextEditingController cName = new TextEditingController();
-  TextEditingController cEmail = new TextEditingController();
-  TextEditingController cPassword = new TextEditingController();
-  TextEditingController cConfirmPassword = new TextEditingController();
+class SignUpPage extends StatelessWidget {
+  static const String TAG = 'signup_page.dart';
+
+  final TextEditingController cUserId = new TextEditingController();
+  final TextEditingController cName = new TextEditingController();
+  final TextEditingController cEmail = new TextEditingController();
+  final TextEditingController cPassword = new TextEditingController();
+  final TextEditingController cConfirmPassword = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +52,9 @@ class SignupPage extends StatelessWidget {
           width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
+            children: [
               Column(
-                children: <Widget>[
+                children: [
                   FadeAnimation(
                       1,
                       Text(
@@ -72,13 +75,6 @@ class SignupPage extends StatelessWidget {
               ),
               Column(
                 children: [
-                  // FadeAnimation(
-                  //   1.2,
-                  //   makeInput(
-                  //     label: "User ID",
-                  //     controllerVal: cUserId,
-                  //   ),
-                  // ),
                   FadeAnimation(
                     1.2,
                     makeInput(
@@ -144,7 +140,7 @@ class SignupPage extends StatelessWidget {
                   1.6,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
+                    children: [
                       Text("Already have an account?"),
                       GestureDetector(
                         onTap: () {
@@ -170,7 +166,7 @@ class SignupPage extends StatelessWidget {
   Widget makeInput({label, controllerVal, obscureText = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         Text(
           label,
           style: TextStyle(
@@ -226,15 +222,15 @@ class SignupPage extends StatelessWidget {
         cPassword.text,
       );
 
-      print(_apiResponse.ApiError);
-      if ((_apiResponse.ApiError as ApiError) == null) {
+      Log.e(TAG, '${_apiResponse.apiError}');
+      if ((_apiResponse.apiError as ApiError) == null) {
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/login',
           ModalRoute.withName('/home'),
         );
       } else {
-        var errorObj = _apiResponse.ApiError as ApiError;
+        var errorObj = _apiResponse.apiError as ApiError;
         msgToast(errorObj.error);
       }
     } else {

@@ -1,21 +1,10 @@
 class ApiError {
-  String _error;
+  String error;
 
-  ApiError({String error}) {
-    this._error = error;
-  }
+  ApiError({this.error});
 
-  String get error => _error;
+  ApiError.fromJson(Map<String, dynamic> json) : error = json['status'];
 
-  set error(String error) => _error = error;
-
-  ApiError.fromJson(Map<String, dynamic> json) {
-    _error = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this._error;
-    return data;
-  }
+  Map<String, dynamic> toJson() =>
+      new Map<String, dynamic>().putIfAbsent('status', () => error);
 }

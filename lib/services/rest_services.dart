@@ -10,7 +10,9 @@ import 'package:http/http.dart' as http;
 
 class RestServices {
   // Server Address
-  static const BASE_URL = 'http://192.168.0.102:3000';
+  // static const BASE_URL = 'http://192.168.0.102:3000';
+  static const BASE_URL = 'http://192.168.1.2:3000';
+
   Future<ApiResponse> getDishes() async {
     ApiResponse _apiResponse = new ApiResponse();
     Uri url = Uri.parse(BASE_URL + '/dishes');
@@ -22,22 +24,22 @@ class RestServices {
           _apiResponse.data = DishList.fromJson(json.decode(response.body));
           break;
         case 401:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           msgToast('Server error. Please retry');
           break;
         default:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           msgToast('Server error. Please retry');
           break;
       }
     } on SocketException {
-      _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+      _apiResponse.apiError = ApiError(error: "Server error. Please retry");
     }
     return _apiResponse;
   }
 
-  Future<ApiResponse> addDish(String dish_name, int dish_price,
-      String dish_type, String restaurant_id) async {
+  Future<ApiResponse> addDish(String dishName, int dishPrice, String dishType,
+      String restaurantId) async {
     int isAvailable = 1;
     ApiResponse _apiResponse = new ApiResponse();
     Uri url = Uri.parse(BASE_URL + '/dishes');
@@ -49,11 +51,11 @@ class RestServices {
         },
         body: jsonEncode(<String, String>{
           //'dish_id': dish_id,
-          'dish_name': dish_name,
-          'dish_price': dish_price.toString(),
+          'dish_name': dishName,
+          'dish_price': dishPrice.toString(),
           'isAvailable': isAvailable.toString(),
-          'dish_type': dish_type,
-          'dish_rest_id': restaurant_id
+          'dish_type': dishType,
+          'dish_rest_id': restaurantId
         }),
       );
 
@@ -63,31 +65,31 @@ class RestServices {
           msgToast('Dish Add Successful');
           break;
         case 409:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           // showToastMsg('login failed');
           break;
         default:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           // showToastMsg('login failed');
           break;
       }
     } on SocketException {
-      _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+      _apiResponse.apiError = ApiError(error: "Server error. Please retry");
     }
     return _apiResponse;
   }
 
   Future<ApiResponse> editDish(
-      String dish_name,
-      String dish_price,
+      String dishName,
+      String dishPrice,
       String isAvailable,
-      String dish_type,
-      String dish_id,
-      String dish_rest_id) async {
+      String dishType,
+      String dishId,
+      String dishRestId) async {
 //    int isAvailable= 0;
     ApiResponse _apiResponse = new ApiResponse();
 
-    Uri url = Uri.parse(BASE_URL + '/dishes/$dish_id');
+    Uri url = Uri.parse(BASE_URL + '/dishes/$dishId');
     try {
       final http.Response response = await http.put(
         url,
@@ -95,11 +97,11 @@ class RestServices {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'dish_name': dish_name,
-          'dish_price': dish_price,
+          'dish_name': dishName,
+          'dish_price': dishPrice,
           'isAvailable': isAvailable,
-          'dish_type': dish_type,
-          'dish_rest_id': dish_rest_id,
+          'dish_type': dishType,
+          'dish_rest_id': dishRestId,
         }),
       );
 
@@ -109,16 +111,16 @@ class RestServices {
           msgToast('Dish Edit Successful');
           break;
         case 409:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           //msgToast('login failed');
           break;
         default:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           // msgToast('login failed');
           break;
       }
     } on SocketException {
-      _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+      _apiResponse.apiError = ApiError(error: "Server error. Please retry");
     }
     return _apiResponse;
   }

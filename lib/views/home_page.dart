@@ -14,38 +14,43 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
+            children: [
               Column(
-                children: <Widget>[
+                children: [
                   FadeAnimation(
-                      1,
-                      Text(
-                        "Food ordering App",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 30),
-                      )),
+                    1,
+                    Text(
+                      "Food ordering App",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    ),
+                  ),
                   SizedBox(
                     height: 20,
                   ),
                   FadeAnimation(
-                      1.2,
-                      Text(
-                        "Please verify yourself and enjoy",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey[700], fontSize: 15),
-                      )),
+                    1.2,
+                    Text(
+                      "Please verify yourself and enjoy",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey[700], fontSize: 15),
+                    ),
+                  ),
                 ],
               ),
               FadeAnimation(
-                  1.4,
-                  Container(
-                    height: MediaQuery.of(context).size.height / 3,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/delivery.png'))),
-                  )),
+                1.4,
+                Container(
+                  height: MediaQuery.of(context).size.height / 3,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/delivery.png'),
+                    ),
+                  ),
+                ),
+              ),
               Column(
-                children: <Widget>[
+                children: [
                   FadeAnimation(
                       1.5,
                       MaterialButton(
@@ -55,12 +60,15 @@ class HomePage extends StatelessWidget {
                           Navigator.pushNamed(context, '/login');
                         },
                         shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.black),
-                            borderRadius: BorderRadius.circular(50)),
+                          side: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
                         child: Text(
                           "Login",
                           style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 18),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
                         ),
                       )),
                   SizedBox(
@@ -71,13 +79,14 @@ class HomePage extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.only(top: 3, left: 3),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            border: Border(
-                              bottom: BorderSide(color: Colors.black),
-                              top: BorderSide(color: Colors.black),
-                              left: BorderSide(color: Colors.black),
-                              right: BorderSide(color: Colors.black),
-                            )),
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border(
+                            bottom: BorderSide(color: Colors.black),
+                            top: BorderSide(color: Colors.black),
+                            left: BorderSide(color: Colors.black),
+                            right: BorderSide(color: Colors.black),
+                          ),
+                        ),
                         child: MaterialButton(
                           minWidth: double.infinity,
                           height: 60,
@@ -87,11 +96,14 @@ class HomePage extends StatelessWidget {
                           color: Colors.yellow,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50)),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
                           child: Text(
                             "Sign up",
                             style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 18),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ))

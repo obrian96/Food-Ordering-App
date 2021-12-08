@@ -210,7 +210,7 @@ class _DishAddFormState extends State<DishAddForm> {
       restaurantID.text,
     );
 
-    if ((_apiResponse.ApiError as ApiError) == null) {
+    if ((_apiResponse.apiError as ApiError) == null) {
       Navigator.pushNamedAndRemoveUntil(
         context,
         '/loadDash',

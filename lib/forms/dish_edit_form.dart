@@ -176,8 +176,8 @@ class _DishEditFormState extends State<DishEditForm> {
       restaurantId.text,
     );
 
-    print(_apiResponse.ApiError);
-    if ((_apiResponse.ApiError as ApiError) == null) {
+    print(_apiResponse.apiError);
+    if ((_apiResponse.apiError as ApiError) == null) {
       Navigator.pushNamedAndRemoveUntil(
         context,
         '/loadDash',

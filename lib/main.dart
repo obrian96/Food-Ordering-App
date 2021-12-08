@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => LandingPage(), // Launcher page
           '/home': (context) => HomePage(), // Home page
           '/login': (context) => LoginPage(), // Login page
-          '/signup': (context) => SignupPage(), // Sign up page
+          '/signup': (context) => SignUpPage(), // Sign up page
           '/dash': (context) => Dashboard(), // Dashboard
           '/adminDash': (context) => AdminDashboard(), // Admin dashboard
           '/profile': (context) => ProfileScreen(), // Profile page

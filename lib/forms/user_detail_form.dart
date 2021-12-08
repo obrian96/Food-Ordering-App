@@ -152,8 +152,8 @@ class _UserDetailFormState extends State<UserDetailForm> {
     ApiResponse _apiResponse = await userServices.user_detail_form(
         userID.text, email.text, phone.text, address.text, pincode.text);
 
-    print(_apiResponse.ApiError);
-    if ((_apiResponse.ApiError as ApiError) == null) {
+    print(_apiResponse.apiError);
+    if ((_apiResponse.apiError as ApiError) == null) {
       Navigator.pushNamedAndRemoveUntil(
         context,
         '/admindash',

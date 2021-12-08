@@ -6,12 +6,11 @@ import 'package:food_ordering_app/models/dish_list.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
 import 'package:food_ordering_app/views/cart_page.dart';
+import 'package:food_ordering_app/views/user/navigation_drawer_widget.dart';
 import 'package:food_ordering_app/views/user/pages/user_catalog_item.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import '../navigation_drawer_widget.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -34,12 +33,14 @@ class _DashboardState extends State<Dashboard> {
       backgroundColor: Color(0xfff5f5f5),
       appBar: AppBar(
         title: new Text("Food Ordering App"),
-        actions: <Widget>[
+        actions: [
           IconButton(
             constraints: BoxConstraints.expand(width: 80),
-            icon: Text('View Profile', textAlign: TextAlign.center),
+            icon: Icon(Icons.account_circle_rounded),
+            iconSize: 30,
+            // Text('View Profile', textAlign: TextAlign.center),
             onPressed: () {
-              _ProfileHandler(context);
+              _profileHandler(context);
             },
           ),
         ],
@@ -56,7 +57,7 @@ class _DashboardState extends State<Dashboard> {
   }
 }
 
-void _ProfileHandler(BuildContext context) async {
+void _profileHandler(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String _userId = (prefs.getString("user_id") ?? "");
   if (_userId == "") {
@@ -69,7 +70,7 @@ void _ProfileHandler(BuildContext context) async {
   } else {
     UserServices userServices = new UserServices();
     ApiResponse _apiResponse = await userServices.details(_userId);
-    if ((_apiResponse.ApiError as ApiError) == null) {
+    if ((_apiResponse.apiError as ApiError) == null) {
       Navigator.pushNamed(
         context,
         '/profile',

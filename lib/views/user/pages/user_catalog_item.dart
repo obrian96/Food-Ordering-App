@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/models/cart.dart';
 import 'package:food_ordering_app/models/dish.dart';
+import 'package:food_ordering_app/widgets/catalog_image.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import '../../../widgets/catalog_image.dart';
 
 class CatalogItemUser extends StatelessWidget {
   final Dish dish;
@@ -19,7 +18,7 @@ class CatalogItemUser extends StatelessWidget {
         child: Row(
       children: [
         Hero(
-          tag: Key(dish.dish_id.toString()),
+          tag: Key(dish.dishId.toString()),
           child: CatalogImage(
             image:
                 "https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900",
@@ -30,8 +29,8 @@ class CatalogItemUser extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            dish.dish_name.text.lg.color(Color(0xff403b58)).bold.make(),
-            dish.dish_type.text
+            dish.dishName.text.lg.color(Color(0xff403b58)).bold.make(),
+            dish.dishType.text
                 .textStyle(context.captionStyle)
                 .color(Color(0xff403b58))
                 .make(),
@@ -40,7 +39,7 @@ class CatalogItemUser extends StatelessWidget {
               alignment: MainAxisAlignment.spaceBetween,
               buttonPadding: EdgeInsets.zero,
               children: [
-                "\K${dish.dish_price}".text.xl.bold.make(),
+                "\K${dish.dishPrice}".text.xl.bold.make(),
                 AddToCart(dish: dish),
               ],
             ).pOnly(right: 16.0)
@@ -65,13 +64,13 @@ class AddToCart extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        if (_cart.cart.findItemIndexFromCart(dish.dish_id) == null) {
+        if (_cart.cart.findItemIndexFromCart(dish.dishId) == null) {
           CartModel().addToCart(dish);
-          msgToast('${dish.dish_name} added in the cart');
+          msgToast('${dish.dishName} added in the cart');
         } else {
           CartModel()
-              .addItemToCart(_cart.cart.findItemIndexFromCart(dish.dish_id));
-          msgToast('${dish.dish_name} added in the cart');
+              .addItemToCart(_cart.cart.findItemIndexFromCart(dish.dishId));
+          msgToast('${dish.dishName} added in the cart');
         }
       },
       style: ButtonStyle(

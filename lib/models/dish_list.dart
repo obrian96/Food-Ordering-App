@@ -21,5 +21,5 @@ class DishList {
   }
 
   Dish getById(int id) =>
-      dishes.firstWhere((element) => element.dish_id == id, orElse: null);
+      dishes.firstWhere((element) => element.dishId == id, orElse: null);
 }

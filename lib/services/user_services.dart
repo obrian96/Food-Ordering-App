@@ -11,7 +11,8 @@ import 'package:http/http.dart' as http;
 
 class UserServices {
   // Server Address
-  static const BASE_URL = 'http://192.168.0.102:3000';
+  // static const BASE_URL = 'http://192.168.0.102:3000';
+  static const BASE_URL = 'http://192.168.1.2:3000';
 
   static const TAG = 'user_services.dart';
   static int detailsTryCount = 0;
@@ -36,20 +37,20 @@ class UserServices {
           _apiResponse.data = UserDetails.fromJson(json.decode(response.body));
           break;
         case 401:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
         case 403:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
         default:
           Log.e(TAG, '${response}');
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
       }
     } catch (e) {
       Log.e(TAG,
           'Repeated [' + detailsTryCount.toString() + ']: ' + e?.toString());
-      _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+      _apiResponse.apiError = ApiError(error: "Server error. Please retry");
     }
     return _apiResponse;
   }
@@ -76,10 +77,10 @@ class UserServices {
           msgToast('Login Successful');
           break;
         case 401:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
         default:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
       }
     } catch (e) {
@@ -115,10 +116,10 @@ class UserServices {
           msgToast('SignUp Successful');
           break;
         case 409:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
         default:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
       }
     } /* on SocketException */ catch (e) {
@@ -155,14 +156,14 @@ class UserServices {
           msgToast('Dish Edit Successful');
           break;
         case 409:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
         default:
-          _apiResponse.ApiError = ApiError.fromJson(json.decode(response.body));
+          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
       }
     } on SocketException {
-      _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
+      _apiResponse.apiError = ApiError(error: "Server error. Please retry");
     }
     return _apiResponse;
   }

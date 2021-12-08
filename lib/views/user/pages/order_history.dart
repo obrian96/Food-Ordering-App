@@ -78,7 +78,7 @@ class OrdersItem extends StatelessWidget {
               children: [
                 order.title.text.lg.color(Color(0xff403b58)).bold.make(),
                 5.heightBox,
-                "${order.quantity} \× \₹${order.price}"
+                "${order.quantity} \× \K${order.price}"
                     .text
                     .color(Color(0xff403b58))
                     .lg

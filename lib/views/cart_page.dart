@@ -67,7 +67,7 @@ class __CartListState extends State<_CartList> {
                 },
               ),
               trailing:
-                  '${_cart.cart.cartItem[index].quantity} * \₹${_cart.cart.cartItem[index].unitPrice}'
+                  '${_cart.cart.cartItem[index].quantity} * \K${_cart.cart.cartItem[index].unitPrice}'
                       .text
                       .lg
                       .color(Color(0xff403b58))
@@ -110,7 +110,7 @@ class __CartTotalState extends State<_CartTotal> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          "\₹${totalprice}".text.xl5.color(Color(0xff403b58)).make(),
+          "\K${totalprice}".text.xl5.color(Color(0xff403b58)).make(),
           30.widthBox,
           Center(
             child:

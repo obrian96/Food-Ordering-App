@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food_ordering_app/Forms/user_detail_form.dart';
 import 'package:food_ordering_app/models/user_details.dart';
-import 'package:food_ordering_app/views/User/order_history.dart';
+import 'package:food_ordering_app/views/user/pages/order_history.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -13,6 +14,24 @@ class ProfileScreen extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+
+        appBar: AppBar(
+          elevation: 0,
+
+          title: new Text("Profile Page "),
+
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+              color: Colors.white,
+            ),
+          ),
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+        ),
         backgroundColor: Color(0xff212121),
         body: SafeArea(
             child: Column(
@@ -111,7 +130,7 @@ class ProfileScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
                 title: Text(
-                  'Edit',
+                  'Edit Profile',
                   style: TextStyle(
                       fontSize: 17.0,
                       color: Colors.white,

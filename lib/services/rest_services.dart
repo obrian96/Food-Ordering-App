@@ -10,8 +10,7 @@ import 'package:http/http.dart' as http;
 
 class RestServices {
   // Server Address
-  static const BASE_URL = 'http://192.168.1.2:3000';
-
+  static const BASE_URL = 'http://192.168.0.102:3000';
   Future<ApiResponse> getDishes() async {
     ApiResponse _apiResponse = new ApiResponse();
     Uri url = Uri.parse(BASE_URL + '/dishes');
@@ -87,7 +86,7 @@ class RestServices {
       String dish_rest_id) async {
 //    int isAvailable= 0;
     ApiResponse _apiResponse = new ApiResponse();
-    ///////////isko dekho kon sa api hai
+
     Uri url = Uri.parse(BASE_URL + '/dishes/$dish_id');
     try {
       final http.Response response = await http.put(

@@ -171,7 +171,7 @@ class _DishAddFormState extends State<DishAddForm> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xffEEEEEE),
-                  labelText: "restaurant ID",
+                  labelText: "admin ID",
                 ),
                 onChanged: (value) {},
               ),

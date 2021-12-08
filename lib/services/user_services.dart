@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 
 class UserServices {
   // Server Address
-  static const BASE_URL = 'http://192.168.1.2:3000';
+  static const BASE_URL = 'http://192.168.0.102:3000';
 
   static const TAG = 'user_services.dart';
   static int detailsTryCount = 0;

@@ -4,7 +4,7 @@ import 'package:food_ordering_app/models/dish.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../widgets/catalog_image.dart';
+import '../../../widgets/catalog_image.dart';
 
 class CatalogItemUser extends StatelessWidget {
   final Dish dish;
@@ -40,7 +40,7 @@ class CatalogItemUser extends StatelessWidget {
               alignment: MainAxisAlignment.spaceBetween,
               buttonPadding: EdgeInsets.zero,
               children: [
-                "\₹${dish.dish_price}".text.xl.bold.make(),
+                "\K${dish.dish_price}".text.xl.bold.make(),
                 AddToCart(dish: dish),
               ],
             ).pOnly(right: 16.0)

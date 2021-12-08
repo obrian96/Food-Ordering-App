@@ -226,7 +226,7 @@
 	],
 	"find":
 	{
-		"height": 27.0
+		"height": 29.6
 	},
 	"find_in_files":
 	{
@@ -266,7 +266,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 27.0
+		"height": 29.6
 	},
 	"input":
 	{
@@ -315,7 +315,7 @@
 	"project": "Food-Ordering-App.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 56.0
 	},
 	"save_all_on_build": true,
 	"select_file":

@@ -3,14 +3,14 @@ import 'package:flutter/widgets.dart';
 import 'package:food_ordering_app/forms/dish_add_form.dart';
 import 'package:food_ordering_app/forms/dish_edit_form.dart';
 import 'package:food_ordering_app/forms/user_detail_form.dart';
+import 'package:food_ordering_app/views/admin/admin_dashboard.dart';
 import 'package:food_ordering_app/views/dashboard_loader.dart';
 import 'package:food_ordering_app/views/home_page.dart';
 import 'package:food_ordering_app/views/landing_page.dart';
 import 'package:food_ordering_app/views/login_page.dart';
 import 'package:food_ordering_app/views/profile_page.dart';
-import 'package:food_ordering_app/views/restaurant/admin_dashboard.dart';
 import 'package:food_ordering_app/views/signup_page.dart';
-import 'package:food_ordering_app/views/user/user_dashboard.dart';
+import 'package:food_ordering_app/views/user/pages/user_dashboard.dart';
 
 void main() => runApp(MyApp());
 

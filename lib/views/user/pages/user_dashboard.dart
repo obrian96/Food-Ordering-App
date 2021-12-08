@@ -1,56 +1,70 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/Forms/dish_add_form.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/dish_list.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
-import 'package:food_ordering_app/views/Restaurant/admin_catalog_item.dart';
+import 'package:food_ordering_app/views/cart_page.dart';
+import 'package:food_ordering_app/views/user/pages/user_catalog_item.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class AdminDashboard extends StatefulWidget {
+import '../navigation_drawer_widget.dart';
+
+class Dashboard extends StatefulWidget {
   @override
-  _AdminDashboardState createState() => _AdminDashboardState();
+  _DashboardState createState() => _DashboardState();
 }
 
-class _AdminDashboardState extends State<AdminDashboard> {
+class _DashboardState extends State<Dashboard> {
+  DishList futDishList;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final DishList args = ModalRoute.of(context).settings.arguments as DishList;
     return Scaffold(
+      drawer: NavigationDrawerWidget(),
       backgroundColor: Color(0xfff5f5f5),
       appBar: AppBar(
-        leading: new IconButton(
-          icon: new Icon(Icons.account_circle),
-          onPressed: () {
-            _profileHandler(context);
-          },
-        ),
-        title: new Text("Swiggato - DashBoard"),
+        title: new Text("Food Ordering App"),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {})
+          IconButton(
+            constraints: BoxConstraints.expand(width: 80),
+            icon: Text('View Profile', textAlign: TextAlign.center),
+            onPressed: () {
+              _ProfileHandler(context);
+            },
+          ),
         ],
       ),
       body: CatalogList(dishList: args),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DishAddForm()));
+              context, MaterialPageRoute(builder: (context) => CartPage()));
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.shopping_cart),
       ),
     );
   }
 }
 
-void _profileHandler(BuildContext context) async {
+void _ProfileHandler(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String _userId = (prefs.getString("user_id") ?? "");
   if (_userId == "") {
-    Navigator.pushReplacementNamed(context, '/home');
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/home',
+      ModalRoute.withName('/home'),
+    );
     msgToast("invalid Login State!");
   } else {
     UserServices userServices = new UserServices();
@@ -80,12 +94,12 @@ class CatalogList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (dishList == null)
-        ? "Nothing to show".text.make().centered()
+        ? "Nothing to show".text.xl3.make().centered()
         : ListView.builder(
             shrinkWrap: true,
             itemCount: dishList.length,
             itemBuilder: (context, index) {
-              return CatalogItemAdmin(dish: dishList.getIndex(index));
+              return CatalogItemUser(dish: dishList.getIndex(index));
             },
           );
   }

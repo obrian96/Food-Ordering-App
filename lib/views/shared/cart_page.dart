@@ -1,6 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/model/cart_model.dart';
+import 'package:food_ordering_app/models/api_error.dart';
+import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/cart.dart';
+import 'package:food_ordering_app/models/dish.dart';
+import 'package:food_ordering_app/models/server_response.dart';
+import 'package:food_ordering_app/services/order_services.dart';
+import 'package:food_ordering_app/util/logcat.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -93,13 +100,15 @@ class _CartTotal extends StatefulWidget {
 class __CartTotalState extends State<_CartTotal> {
   final CartModel _cart = CartModel();
 
-  var totalprice = 0.0;
+  var totalPrice = 0.0;
+
+  static const String TAG = 'cart_page.dart';
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      totalprice = _cart.cart.getTotalAmount();
+      totalPrice = _cart.cart.getTotalAmount();
     });
   }
 
@@ -110,46 +119,68 @@ class __CartTotalState extends State<_CartTotal> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          "\K${totalprice}".text.xl5.color(Color(0xff403b58)).make(),
+          "\K${totalPrice}".text.xl5.color(Color(0xff403b58)).make(),
           30.widthBox,
           Center(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              30.widthBox,
-              ElevatedButton(
-                onPressed: () {
-                  // Scaffold.of(context).showSnackBar(SnackBar(content: "Buying not supported yet".text.make()));
-                  msgToast('Price Updated');
-                  setState(() {
-                    totalprice = _cart.cart.getTotalAmount();
-                  });
-                },
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Color(0xff403b58))),
-                child: "Update Price".text.white.make(),
-              ).w32(context),
-              // 100.widthBox,
-              SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                      content: "Buying not supported yet".text.make()));
-                  setState(() {
-                    totalprice = _cart.cart.getTotalAmount();
-                  });
-                },
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Color(0xff403b58))),
-                child: "Buy".text.white.make(),
-              ).w32(context),
-            ]),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                30.widthBox,
+                // ElevatedButton(
+                //   onPressed: () {
+                //     // Scaffold.of(context).showSnackBar(SnackBar(content: "Buying not supported yet".text.make()));
+                //     msgToast('Price Updated');
+                //     setState(() {
+                //       totalPrice = _cart.cart.getTotalAmount();
+                //     });
+                //   },
+                //   style: ButtonStyle(
+                //       backgroundColor:
+                //           MaterialStateProperty.all(Color(0xff403b58))),
+                //   child: "Update Price".text.white.make(),
+                // ).w32(context),
+                // 100.widthBox,
+                SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Scaffold.of(context).showSnackBar(SnackBar(
+                    //     content: "Buying not supported yet".text.make()));
+                    buyItems(context);
+                    setState(() {
+                      totalPrice = _cart.cart.getTotalAmount();
+                    });
+                  },
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Color(0xff403b58))),
+                  child: "Buy".text.white.make(),
+                ).w32(context),
+              ],
+            ),
           ),
         ],
       ),
     );
+  }
+
+  void buyItems(context) async {
+    List<CartItem> items = _cart.cart.cartItem;
+    if (items.length < 1) {
+      msgToast('No item in cart');
+      return;
+    }
+    OrderServices orderServices = new OrderServices();
+    ApiResponse apiResponse = await orderServices.placeNewOrder(items);
+    if (apiResponse != null && (apiResponse.apiError as ApiError) == null) {
+      msgToast('${(apiResponse.data as ServerResponse).message}');
+      Log.d(TAG, '${(apiResponse.data as ServerResponse).message}');
+      _cart.cart.deleteAllCart();
+      Navigator.pop(context);
+    } else {
+      msgToast('${(apiResponse.apiError as ApiError).error}');
+      Log.e(TAG, '${(apiResponse.apiError as ApiError).error}');
+    }
   }
 }

@@ -5,9 +5,8 @@ import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/dish_list.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
-import 'package:food_ordering_app/views/cart_page.dart';
-import 'package:food_ordering_app/views/user/navigation_drawer_widget.dart';
-import 'package:food_ordering_app/views/user/pages/user_catalog_item.dart';
+import 'package:food_ordering_app/views/user/user_catalog_item.dart';
+import 'package:food_ordering_app/views/user/user_navigation_drawer.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -48,8 +47,7 @@ class _DashboardState extends State<Dashboard> {
       body: CatalogList(dishList: args),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CartPage()));
+          Navigator.pushNamed(context, '/cart');
         },
         child: Icon(Icons.shopping_cart),
       ),

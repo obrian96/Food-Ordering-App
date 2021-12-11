@@ -2,24 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_ordering_app/Forms/user_detail_form.dart';
 import 'package:food_ordering_app/models/user_details.dart';
-import 'package:food_ordering_app/views/user/pages/order_history.dart';
+import 'package:food_ordering_app/views/user/user_order_history.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreen createState() => _ProfileScreen();
+}
+
+class _ProfileScreen extends State<ProfileScreen> {
+  bool visibilityController = true;
+
   @override
   Widget build(BuildContext context) {
     final UserDetails args =
         ModalRoute.of(context).settings.arguments as UserDetails;
-
+    if (args.isAdmin == 1) visibilityController = false;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-
         appBar: AppBar(
           elevation: 0,
-
           title: new Text("Profile Page "),
-
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -81,34 +85,37 @@ class ProfileScreen extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25.0),
-              ),
-              color: Color(0xff373737),
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-              child: ListTile(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OrderHistoryPage()));
-                },
-                leading: Icon(
-                  Icons.history,
-                  color: Colors.white,
+            Visibility(
+              visible: visibilityController,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0),
                 ),
-                title: Text(
-                  'Your orders',
-                  style: TextStyle(
+                color: Color(0xff373737),
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                child: ListTile(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OrderHistoryPage()));
+                  },
+                  leading: Icon(
+                    Icons.history,
                     color: Colors.white,
-                    fontFamily: 'Source Sans Pro',
-                    fontSize: 17.0,
                   ),
-                ),
-                trailing: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: Colors.white,
+                  title: Text(
+                    'Your orders',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Source Sans Pro',
+                      fontSize: 17.0,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

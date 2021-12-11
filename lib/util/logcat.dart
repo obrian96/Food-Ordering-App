@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 // TODO: Need to improve log levels.
 class Log {
   static void i(String tag, String message) {
+    developer.log('', name: 'Logcat');
     developer.log(
       tag + ': \n\n' + message + '\n\n---',
       name: 'Info',
@@ -10,6 +11,7 @@ class Log {
   }
 
   static void d(String tag, String message) {
+    developer.log('', name: 'Logcat');
     developer.log(
       tag + ': \n\n' + message + '\n\n---',
       name: 'Debug',
@@ -17,6 +19,7 @@ class Log {
   }
 
   static void w(String tag, String error) {
+    developer.log('', name: 'Logcat');
     developer.log(
       tag + ': ',
       name: 'Warning',
@@ -25,6 +28,7 @@ class Log {
   }
 
   static void e(String tag, String error) {
+    developer.log('', name: 'Logcat');
     developer.log(
       tag + ': ',
       name: 'Error',

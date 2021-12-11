@@ -3,11 +3,10 @@ import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
-import 'package:food_ordering_app/views/cart_page.dart';
-import 'package:food_ordering_app/views/profile_page.dart';
-import 'package:food_ordering_app/views/user/pages/order_history.dart';
 import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../shared/profile_page.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   final padding = EdgeInsets.symmetric(horizontal: 20);
@@ -37,7 +36,7 @@ class NavigationDrawerWidget extends StatelessWidget {
                     ),
                     ListTile(
                       leading: Icon(Icons.home),
-                      title: Text("Home"),
+                      title: Text("Dashboard"),
                       onTap: () {
                         Navigator.pop(context);
                         // Navigator.of(context).push(MaterialPageRoute(
@@ -45,29 +44,33 @@ class NavigationDrawerWidget extends StatelessWidget {
                         // ));
                       },
                     ),
-                    new ListTile(
-                      title: new Text(
-                        'User Actions',
+                    ListTile(
+                      title: Text(
+                        'Admin Actions',
                         style: TextStyle(color: Colors.black54),
                       ),
                       dense: true,
                     ),
                     ListTile(
-                      leading: Icon(Icons.shopping_cart),
-                      title: Text("Cart"),
+                      leading: Icon(Icons.settings),
+                      title: Text("Order Management"),
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CartPage(),
-                        ));
+                        Navigator.pushNamed(context, '/adminOrderManagement');
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.money),
-                      title: Text("Your Orders"),
+                      leading: Icon(Icons.settings),
+                      title: Text("Restaurant Menu Management"),
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => OrderHistoryPage(),
-                        ));
+                        Navigator.pushNamed(
+                            context, '/adminRestaurantMenuManagement');
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.settings),
+                      title: Text("User Management"),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/adminUserManagement');
                       },
                     ),
                     ListTile(

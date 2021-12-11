@@ -4,13 +4,18 @@ import 'package:food_ordering_app/forms/dish_add_form.dart';
 import 'package:food_ordering_app/forms/dish_edit_form.dart';
 import 'package:food_ordering_app/forms/user_detail_form.dart';
 import 'package:food_ordering_app/views/admin/admin_dashboard.dart';
-import 'package:food_ordering_app/views/dashboard_loader.dart';
-import 'package:food_ordering_app/views/home_page.dart';
-import 'package:food_ordering_app/views/landing_page.dart';
-import 'package:food_ordering_app/views/login_page.dart';
-import 'package:food_ordering_app/views/profile_page.dart';
-import 'package:food_ordering_app/views/signup_page.dart';
-import 'package:food_ordering_app/views/user/pages/user_dashboard.dart';
+import 'package:food_ordering_app/views/admin/admin_order_management.dart';
+import 'package:food_ordering_app/views/admin/admin_restaurant_management.dart';
+import 'package:food_ordering_app/views/admin/admin_user_management.dart';
+import 'package:food_ordering_app/views/shared/cart_page.dart';
+import 'package:food_ordering_app/views/shared/dashboard_loader.dart';
+import 'package:food_ordering_app/views/shared/home_page.dart';
+import 'package:food_ordering_app/views/shared/landing_page.dart';
+import 'package:food_ordering_app/views/shared/login_page.dart';
+import 'package:food_ordering_app/views/shared/profile_page.dart';
+import 'package:food_ordering_app/views/shared/signup_page.dart';
+import 'package:food_ordering_app/views/user/user_dashboard.dart';
+import 'package:food_ordering_app/views/user/user_order_history.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,17 +26,34 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Food Delivery App',
         routes: {
-          '/': (context) => LandingPage(), // Launcher page
-          '/home': (context) => HomePage(), // Home page
-          '/login': (context) => LoginPage(), // Login page
-          '/signup': (context) => SignUpPage(), // Sign up page
-          '/dash': (context) => Dashboard(), // Dashboard
-          '/adminDash': (context) => AdminDashboard(), // Admin dashboard
-          '/profile': (context) => ProfileScreen(), // Profile page
+          // Launcher page
+          '/': (context) => LandingPage(),
+          // Home page
+          '/home': (context) => HomePage(),
+          // Login page
+          '/login': (context) => LoginPage(),
+          // Sign up page
+          '/signup': (context) => SignUpPage(),
+          // Dashboard
+          '/dash': (context) => Dashboard(),
+          '/orderHistory': (context) => OrderHistoryPage(),
+          // Admin dashboard
+          '/adminDash': (context) => AdminDashboard(),
+          // Profile page
+          '/profile': (context) => ProfileScreen(),
+          // Cart page
+          '/cart': (context) => CartPage(),
           '/loadDash': (context) => DashboardLoader(),
           '/dishEditForm': (context) => DishEditForm(),
           '/dishAddForm': (context) => DishAddForm(),
           '/userDetailsForm': (context) => UserDetailForm(),
+          // Admin order management page
+          '/adminOrderManagement': (context) => AdminOrderManagement(),
+          // Admin restaurant menu management page
+          '/adminRestaurantManagement': (context) =>
+              AdminRestaurantManagement(),
+          // Admin user management page
+          '/adminUserManagement': (context) => AdminUserManagement(),
         });
   }
 }

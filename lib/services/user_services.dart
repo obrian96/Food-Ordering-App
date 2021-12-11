@@ -167,4 +167,36 @@ class UserServices {
     }
     return _apiResponse;
   }
+
+  Future<ApiResponse> addNewOrder(
+      String orderQty, String orderDishId, String orderUserId) async {
+    ApiResponse apiResponse = new ApiResponse();
+    Uri url = Uri.parse(BASE_URL + '/orderhstry');
+    try {
+      final http.Response response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'order_qty': orderQty,
+          'order_dish_id': orderDishId,
+          'order_user_id': orderUserId,
+        }),
+      );
+      switch (response.statusCode) {
+        case 200:
+          apiResponse.data = User.fromJson(json.decode(response.body));
+          msgToast('Order Sent!');
+          break;
+        default:
+          apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
+          break;
+      }
+    } catch (e) {
+      Log.e(TAG, '$e');
+      apiResponse.apiError = ApiError(error: '$e');
+    }
+    return apiResponse;
+  }
 }

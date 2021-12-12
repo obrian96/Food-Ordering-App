@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:food_ordering_app/util/soft_utils.dart';
 
 class CardView extends StatelessWidget {
-  final String name, description, price, image;
+  final String userId, name, description, price, image;
 
-  const CardView({key, this.name, this.description, this.price, this.image})
+  const CardView(
+      {key, this.userId, this.name, this.description, this.price, this.image})
       : super(key: key);
 
   @override
@@ -20,8 +22,10 @@ class CardView extends StatelessWidget {
           splashColor: Colors.lightGreenAccent[200],
           borderRadius: BorderRadius.circular(8.0),
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Pizza")),
+            Navigator.pushNamed(
+              context,
+              '/adminOrderItems',
+              arguments: userId,
             );
           },
           child: Row(
@@ -33,8 +37,7 @@ class CardView extends StatelessWidget {
                 margin: const EdgeInsets.all(5),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child:
-                      Image.asset("assets/" + image, fit: BoxFit.fill),
+                  child: SoftUtils.loadImage(image),
                 ),
               ),
               Expanded(
@@ -44,10 +47,14 @@ class CardView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(name,
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
-                      Text(description),
-                      Text("Price: " + price.toString()),
+                      Text(
+                        name,
+                        style: const TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                      // Text(description),
+                      // Text("Price: " + price.toString()),
                     ],
                   ),
                 ),

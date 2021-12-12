@@ -7,7 +7,7 @@ import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
 import 'package:food_ordering_app/views/user/user_catalog_item.dart';
 import 'package:food_ordering_app/views/user/user_navigation_drawer.dart';
-import 'package:food_ordering_app/widgets/msg_toast.dart';
+import 'package:food_ordering_app/util/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -57,22 +57,22 @@ class _DashboardState extends State<Dashboard> {
 
 void _profileHandler(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String _userId = (prefs.getString("user_id") ?? "");
-  if (_userId == "") {
+  String userId = (prefs.getString("user_id") ?? "");
+  if (userId == "") {
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/home',
       ModalRoute.withName('/home'),
     );
-    msgToast("invalid Login State!");
+    toast("invalid Login State!");
   } else {
     UserServices userServices = new UserServices();
-    ApiResponse _apiResponse = await userServices.details(_userId);
-    if ((_apiResponse.apiError as ApiError) == null) {
+    ApiResponse apiResponse = await userServices.details(userId);
+    if ((apiResponse.apiError as ApiError) == null) {
       Navigator.pushNamed(
         context,
         '/profile',
-        arguments: (_apiResponse.data as UserDetails),
+        arguments: (apiResponse.data as UserDetails),
       );
     } else {
       Navigator.pushNamedAndRemoveUntil(
@@ -80,7 +80,7 @@ void _profileHandler(BuildContext context) async {
         '/home',
         ModalRoute.withName('/home'),
       );
-      msgToast("invalid Login State!");
+      toast("invalid Login State!");
     }
   }
 }

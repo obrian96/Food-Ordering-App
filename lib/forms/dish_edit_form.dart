@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/services/rest_services.dart';
-import 'package:food_ordering_app/widgets/msg_toast.dart';
+import 'package:food_ordering_app/util/toast.dart';
 
 class DishEditForm extends StatefulWidget {
   @override
@@ -185,7 +185,7 @@ class _DishEditFormState extends State<DishEditForm> {
         arguments: 1,
       );
     } else {
-      msgToast("DishAdd Failed!");
+      toast("DishAdd Failed!", Colors.green);
     }
   }
 }

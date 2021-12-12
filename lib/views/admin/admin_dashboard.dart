@@ -6,9 +6,9 @@ import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/dish_list.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
+import 'package:food_ordering_app/util/toast.dart';
 import 'package:food_ordering_app/views/admin/admin_catalog_item.dart';
 import 'package:food_ordering_app/views/admin/admin_navigation_drawer.dart';
-import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:food_ordering_app/widgets/simple_card_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -71,7 +71,7 @@ void _profileHandler(BuildContext context) async {
   String _userId = (prefs.getString("user_id") ?? "");
   if (_userId == "") {
     Navigator.pushReplacementNamed(context, '/home');
-    msgToast("invalid Login State!");
+    toast("invalid Login State!");
   } else {
     UserServices userServices = new UserServices();
     ApiResponse _apiResponse = await userServices.details(_userId);
@@ -87,7 +87,7 @@ void _profileHandler(BuildContext context) async {
         '/home',
         ModalRoute.withName('/home'),
       );
-      msgToast("invalid Login State!");
+      toast("invalid Login State!");
     }
   }
 }

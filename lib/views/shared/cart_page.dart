@@ -8,7 +8,7 @@ import 'package:food_ordering_app/models/dish.dart';
 import 'package:food_ordering_app/models/server_response.dart';
 import 'package:food_ordering_app/services/order_services.dart';
 import 'package:food_ordering_app/util/logcat.dart';
-import 'package:food_ordering_app/widgets/msg_toast.dart';
+import '../../util/toast.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CartPage extends StatelessWidget {
@@ -69,8 +69,9 @@ class __CartListState extends State<_CartList> {
                     //totalprice = _cart.cart.getTotalAmount();
                   });
                   //widget.update();
-                  msgToast(
-                      '${_cart.cart.cartItem[index].productDetails.dishName} removed from the cart');
+                  toast(
+                      '${_cart.cart.cartItem[index].productDetails.dishName} removed from the cart',
+                      Colors.orange);
                 },
               ),
               trailing:
@@ -168,18 +169,18 @@ class __CartTotalState extends State<_CartTotal> {
   void buyItems(context) async {
     List<CartItem> items = _cart.cart.cartItem;
     if (items.length < 1) {
-      msgToast('No item in cart');
+      toast('No item in cart');
       return;
     }
     OrderServices orderServices = new OrderServices();
     ApiResponse apiResponse = await orderServices.placeNewOrder(items);
     if (apiResponse != null && (apiResponse.apiError as ApiError) == null) {
-      msgToast('${(apiResponse.data as ServerResponse).message}');
+      toast('${(apiResponse.data as ServerResponse).message}', Colors.green);
       Log.d(TAG, '${(apiResponse.data as ServerResponse).message}');
       _cart.cart.deleteAllCart();
       Navigator.pop(context);
     } else {
-      msgToast('${(apiResponse.apiError as ApiError).error}');
+      toast('${(apiResponse.apiError as ApiError).error}');
       Log.e(TAG, '${(apiResponse.apiError as ApiError).error}');
     }
   }

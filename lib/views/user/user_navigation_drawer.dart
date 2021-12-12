@@ -5,7 +5,7 @@ import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
 import 'package:food_ordering_app/views/shared/cart_page.dart';
 import 'package:food_ordering_app/views/shared/profile_page.dart';
-import 'package:food_ordering_app/widgets/msg_toast.dart';
+import 'package:food_ordering_app/util/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
@@ -106,7 +106,7 @@ void _profileHandler(BuildContext context) async {
       '/home',
       ModalRoute.withName('/home'),
     );
-    msgToast("invalid Login State!");
+    toast("invalid Login State!");
   } else {
     UserServices userServices = new UserServices();
     ApiResponse _apiResponse = await userServices.details(_userId);
@@ -122,7 +122,7 @@ void _profileHandler(BuildContext context) async {
         '/home',
         ModalRoute.withName('/home'),
       );
-      msgToast("invalid Login State!");
+      toast("invalid Login State!");
     }
   }
 }

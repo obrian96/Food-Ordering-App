@@ -4,6 +4,7 @@ import 'package:food_ordering_app/forms/dish_add_form.dart';
 import 'package:food_ordering_app/forms/dish_edit_form.dart';
 import 'package:food_ordering_app/forms/user_detail_form.dart';
 import 'package:food_ordering_app/views/admin/admin_dashboard.dart';
+import 'package:food_ordering_app/views/admin/admin_order_items.dart';
 import 'package:food_ordering_app/views/admin/admin_order_management.dart';
 import 'package:food_ordering_app/views/admin/admin_restaurant_management.dart';
 import 'package:food_ordering_app/views/admin/admin_user_management.dart';
@@ -40,15 +41,19 @@ class MyApp extends StatelessWidget {
           // Admin dashboard
           '/adminDash': (context) => AdminDashboard(),
           // Profile page
-          '/profile': (context) => ProfileScreen(),
+          '/profile': (context) => ProfilePage(),
           // Cart page
           '/cart': (context) => CartPage(),
+          // User detail form
+          '/userDetailForm': (context) => UserDetailForm(),
           '/loadDash': (context) => DashboardLoader(),
           '/dishEditForm': (context) => DishEditForm(),
           '/dishAddForm': (context) => DishAddForm(),
           '/userDetailsForm': (context) => UserDetailForm(),
           // Admin order management page
           '/adminOrderManagement': (context) => AdminOrderManagement(),
+          // Admin order items page
+          '/adminOrderItems': (context) => AdminOrderItems(),
           // Admin restaurant menu management page
           '/adminRestaurantManagement': (context) =>
               AdminRestaurantManagement(),

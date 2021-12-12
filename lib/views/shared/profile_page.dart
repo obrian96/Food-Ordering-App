@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_ordering_app/Forms/user_detail_form.dart';
 import 'package:food_ordering_app/models/user_details.dart';
+import 'package:food_ordering_app/util/logcat.dart';
+import 'package:food_ordering_app/util/soft_utils.dart';
 import 'package:food_ordering_app/views/user/user_order_history.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   @override
-  _ProfileScreen createState() => _ProfileScreen();
+  _ProfilePage createState() => _ProfilePage();
 }
 
-class _ProfileScreen extends State<ProfileScreen> {
+class _ProfilePage extends State<ProfilePage> {
+  static const String TAG = 'profile_page.dart';
+
   bool visibilityController = true;
+  SharedPreferences sharedPrefs;
+  Image profileImage;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,7 @@ class _ProfileScreen extends State<ProfileScreen> {
       home: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: new Text("Profile Page "),
+          title: new Text('Profile Page'),
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -40,11 +45,34 @@ class _ProfileScreen extends State<ProfileScreen> {
         body: SafeArea(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircleAvatar(
-              radius: 50.0,
-              backgroundImage: AssetImage('assets/profile_placeholder.png'),
-            ),
+          children: [
+            FutureBuilder(
+                future: loadProfileImage(),
+                builder: (context, snapshot) {
+                  switch (SoftUtils.state(snapshot)) {
+                    case SoftUtils.COMPLETE:
+                      return CircleAvatar(
+                        radius: 50.0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50.0),
+                          child: SoftUtils.loadImage(snapshot.data),
+                        ),
+                      );
+
+                    case SoftUtils.UNKNOWN:
+                    case SoftUtils.ERROR:
+                      Log.e(TAG, 'Image loading error');
+                      return CircleAvatar(
+                        radius: 50.0,
+                        backgroundImage:
+                            AssetImage('assets/profile_placeholder.png'),
+                      );
+
+                    case SoftUtils.LOADING:
+                    default:
+                      return CircularProgressIndicator();
+                  }
+                }),
             SizedBox(
               height: 20.0,
               width: 150.0,
@@ -127,10 +155,7 @@ class _ProfileScreen extends State<ProfileScreen> {
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
               child: ListTile(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => UserDetailForm()));
+                  Navigator.pushNamed(context, '/userDetailForm');
                 },
                 leading: Icon(
                   Icons.edit,
@@ -181,6 +206,13 @@ class _ProfileScreen extends State<ProfileScreen> {
         )),
       ),
     );
+  }
+
+  Future loadProfileImage() async {
+    sharedPrefs = await SharedPreferences.getInstance();
+    String user_image = await sharedPrefs.getString('user_image');
+    Log.d(TAG, 'Image: ${user_image}');
+    return user_image;
   }
 }
 

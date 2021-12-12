@@ -3,7 +3,7 @@ import 'package:food_ordering_app/animation/fade_animation.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/services/rest_services.dart';
-import 'package:food_ordering_app/widgets/msg_toast.dart';
+import 'package:food_ordering_app/util/toast.dart';
 
 class DishAddForm extends StatefulWidget {
   @override
@@ -218,7 +218,7 @@ class _DishAddFormState extends State<DishAddForm> {
         arguments: isadmin,
       );
     } else {
-      msgToast("DishAdd Failed!");
+      toast("DishAdd Failed!", Colors.green);
     }
   }
 }

@@ -173,7 +173,8 @@ class __CartTotalState extends State<_CartTotal> {
       return;
     }
     OrderServices orderServices = new OrderServices();
-    ApiResponse apiResponse = await orderServices.placeNewOrder(items);
+    ApiResponse apiResponse =
+        await orderServices.placeNewOrder(items, totalPrice.round());
     if (apiResponse != null && (apiResponse.apiError as ApiError) == null) {
       toast('${(apiResponse.data as ServerResponse).message}', Colors.green);
       Log.d(TAG, '${(apiResponse.data as ServerResponse).message}');

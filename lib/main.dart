@@ -6,6 +6,7 @@ import 'package:food_ordering_app/forms/user_detail_form.dart';
 import 'package:food_ordering_app/views/admin/admin_dashboard.dart';
 import 'package:food_ordering_app/views/admin/admin_order_items.dart';
 import 'package:food_ordering_app/views/admin/admin_order_management.dart';
+import 'package:food_ordering_app/views/admin/admin_orders.dart';
 import 'package:food_ordering_app/views/admin/admin_restaurant_management.dart';
 import 'package:food_ordering_app/views/admin/admin_user_management.dart';
 import 'package:food_ordering_app/views/shared/cart_page.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
           '/userDetailsForm': (context) => UserDetailForm(),
           // Admin order management page
           '/adminOrderManagement': (context) => AdminOrderManagement(),
+          '/adminOrders': (context) => AdminOrders(),
           // Admin order items page
           '/adminOrderItems': (context) => AdminOrderItems(),
           // Admin restaurant menu management page

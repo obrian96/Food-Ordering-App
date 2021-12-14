@@ -1,10 +1,23 @@
 class OrderItem {
-  int id;
-  String title;
-  double price;
+  int id, orderId, itemId, quantity, price;
 
-  String image;
-  int quantity;
+  OrderItem(this.id, this.orderId, this.itemId, this.quantity, this.price);
 
-  OrderItem({this.id, this.title, this.price, this.image, this.quantity});
+  factory OrderItem.fromMap(Map<String, dynamic> json) {
+    return OrderItem(json['id'], json['order_id'], json['item_id'],
+        json['quantity'], json['price']);
+  }
+
+  factory OrderItem.fromJson(Map<String, dynamic> json) {
+    return OrderItem(json['id'], json['order_id'], json['item_id'],
+        json['quantity'], json['price']);
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'order_id': orderId,
+        'item_id': orderId,
+        'quantity': quantity,
+        'price': price,
+      };
 }

@@ -190,7 +190,7 @@ class _DishEditFormState extends State<DishEditForm> {
   }
 }
 
-showAlertDialog(BuildContext context) {
+showAlertDialog(context) {
   // Create button
   Widget okButton = Row(
     children: [

@@ -9,7 +9,7 @@ import 'package:food_ordering_app/services/user_services.dart';
 import 'package:food_ordering_app/util/toast.dart';
 import 'package:food_ordering_app/views/admin/admin_catalog_item.dart';
 import 'package:food_ordering_app/views/admin/admin_navigation_drawer.dart';
-import 'package:food_ordering_app/widgets/simple_card_view.dart';
+import 'package:food_ordering_app/widgets/dashboard_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -26,12 +26,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return Scaffold(
       drawer: NavigationDrawerWidget(),
       backgroundColor: Color(0xfff5f5f5),
       appBar: AppBar(
-        title: new Text('Admin - Dashboard'),
+        title: Text('Admin Dashboard'),
+        centerTitle: true,
         actions: [
           IconButton(
             constraints: BoxConstraints.expand(width: 80),
@@ -89,24 +90,5 @@ void _profileHandler(BuildContext context) async {
       );
       toast("invalid Login State!");
     }
-  }
-}
-
-class CatalogList extends StatelessWidget {
-  final DishList dishList;
-
-  CatalogList({Key key, this.dishList});
-
-  @override
-  Widget build(BuildContext context) {
-    return (dishList == null)
-        ? "Nothing to show".text.make().centered()
-        : ListView.builder(
-            shrinkWrap: true,
-            itemCount: dishList.length,
-            itemBuilder: (context, index) {
-              return CatalogItemAdmin(dish: dishList.getIndex(index));
-            },
-          );
   }
 }

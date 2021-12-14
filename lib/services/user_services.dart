@@ -11,11 +11,11 @@ import 'package:food_ordering_app/util/toast.dart';
 import 'package:http/http.dart' as http;
 
 class UserServices {
+  static const TAG = 'user_services.dart';
+
   // Server Address
   // static const BASE_URL = 'http://192.168.0.102:3000';
   static const BASE_URL = 'http://192.168.1.2:3000';
-
-  static const TAG = 'user_services.dart';
   static int detailsTryCount = 0;
 
   Future<ApiResponse> details(String userId) async {
@@ -48,9 +48,8 @@ class UserServices {
           _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
       }
-    } catch (e) {
-      Log.e(TAG,
-          'Repeated [' + detailsTryCount.toString() + ']: ' + e?.toString());
+    } catch (e, s) {
+      Log.e(TAG, '$e', stackTrace: s);
       _apiResponse.apiError = ApiError(error: "Server error. Please retry");
     }
     return _apiResponse;
@@ -165,38 +164,6 @@ class UserServices {
       }
     } catch (e) {
       Log.e(TAG, 'Line 167: Exception: $e');
-      apiResponse.apiError = ApiError(error: '$e');
-    }
-    return apiResponse;
-  }
-
-  Future<ApiResponse> addNewOrder(
-      String orderQty, String orderDishId, String orderUserId) async {
-    ApiResponse apiResponse = new ApiResponse();
-    Uri url = Uri.parse(BASE_URL + '/orderhstry');
-    try {
-      final http.Response response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'order_qty': orderQty,
-          'order_dish_id': orderDishId,
-          'order_user_id': orderUserId,
-        }),
-      );
-      switch (response.statusCode) {
-        case 200:
-          apiResponse.data = User.fromJson(json.decode(response.body));
-          toast('Order Sent!', Colors.green);
-          break;
-        default:
-          apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
-          break;
-      }
-    } catch (e) {
-      Log.e(TAG, '$e');
       apiResponse.apiError = ApiError(error: '$e');
     }
     return apiResponse;

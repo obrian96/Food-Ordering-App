@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/util/soft_utils.dart';
 
-class CardView extends StatelessWidget {
-  final String userId, name, description, price, image;
+class OrderManagementCard extends StatelessWidget {
+  static const String TAG = 'order_management_card.dart';
 
-  const CardView(
-      {key, this.userId, this.name, this.description, this.price, this.image})
-      : super(key: key);
+  final String userId, userName, userImage;
+
+  const OrderManagementCard({this.userId, this.userName, this.userImage});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return Container(
       padding: const EdgeInsets.all(2),
       height: 120,
@@ -19,13 +19,13 @@ class CardView extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: InkWell(
-          splashColor: Colors.lightGreenAccent[200],
+          splashColor: Colors.grey[200],
           borderRadius: BorderRadius.circular(8.0),
           onTap: () {
             Navigator.pushNamed(
               context,
-              '/adminOrderItems',
-              arguments: userId,
+              '/adminOrders',
+              arguments: [userId, userName],
             );
           },
           child: Row(
@@ -37,7 +37,7 @@ class CardView extends StatelessWidget {
                 margin: const EdgeInsets.all(5),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: SoftUtils.loadImage(image),
+                  child: SoftUtils().loadImage(userImage),
                 ),
               ),
               Expanded(
@@ -48,13 +48,11 @@ class CardView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        name,
+                        '$userName',
                         style: const TextStyle(
                           fontSize: 17,
                         ),
                       ),
-                      // Text(description),
-                      // Text("Price: " + price.toString()),
                     ],
                   ),
                 ),

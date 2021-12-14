@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/models/user.dart';
+import 'package:food_ordering_app/models/order.dart';
 import 'package:food_ordering_app/util/logcat.dart';
 import 'package:food_ordering_app/util/soft_utils.dart';
-import 'package:food_ordering_app/widgets/order_management_card.dart';
+import 'package:food_ordering_app/widgets/orders_card.dart';
 
-class AdminOrderManagement extends StatefulWidget {
+class AdminOrders extends StatefulWidget {
   @override
-  _AdminOrderManagementState createState() => _AdminOrderManagementState();
+  _AdminOrders createState() => _AdminOrders();
 }
 
-class _AdminOrderManagementState extends State<AdminOrderManagement> {
-  static const String TAG = 'admin_order_management.dart';
+class _AdminOrders extends State<AdminOrders> {
+  static const String TAG = 'admin_orders.dart';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
+    List args = ModalRoute.of(context).settings.arguments;
+    String userId = args[0];
+    String userName = args[1];
+    Log.d(TAG, 'userId: $userId');
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order Management'),
+        title: Text('$userName'),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
@@ -30,7 +34,7 @@ class _AdminOrderManagementState extends State<AdminOrderManagement> {
         ),
       ),
       body: FutureBuilder(
-        future: SoftUtils().getOrderedUserList(),
+        future: SoftUtils().getUserOrders(userId),
         builder: (context, snapshot) {
           switch (SoftUtils().state(snapshot)) {
             case FutureState.COMPLETE:
@@ -38,11 +42,21 @@ class _AdminOrderManagementState extends State<AdminOrderManagement> {
                 padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
                 child: ListView.builder(
                   itemBuilder: (context, index) {
-                    User user = snapshot.data[index];
-                    return OrderManagementCard(
-                      userId: user.user_id,
-                      userName: user.user_name,
-                      userImage: user.user_image,
+                    Order order = snapshot.data[index];
+                    Log.d(
+                      TAG,
+                      'Order ID: ${order.id}, '
+                      'Order Statue: ${order.status}, '
+                      'Order Total Price: ${order.totalPrice}, '
+                      'Order Start Date: ${order.startDate}, '
+                      'Order End Date: ${order.endDate}, ',
+                    );
+                    return OrdersCard(
+                      orderId: order.id,
+                      orderStatus: order.status,
+                      orderTotalPrice: order.totalPrice,
+                      orderStartDate: order.startDate,
+                      orderEndDate: order.endDate,
                     );
                   },
                   itemCount: snapshot.data == null ? 0 : snapshot.data.length,

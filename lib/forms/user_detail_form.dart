@@ -43,19 +43,19 @@ class _UserDetailFormState extends State<UserDetailForm> {
       body: FutureBuilder(
         future: getProfileDetails(),
         builder: (context, snapshot) {
-          switch (SoftUtils.state(snapshot)) {
-            case SoftUtils.COMPLETE:
+          switch (SoftUtils().state(snapshot)) {
+            case FutureState.COMPLETE:
               return body(context, snapshot);
 
-            case SoftUtils.UNKNOWN:
-            case SoftUtils.ERROR:
+            case FutureState.UNKNOWN:
+            case FutureState.ERROR:
               return Container(
                 child: Center(
                   child: Text('Unable to load data!'),
                 ),
               );
 
-            case SoftUtils.LOADING:
+            case FutureState.LOADING:
             default:
               return Container(
                 child: Center(

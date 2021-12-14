@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/models/cart.dart';
 import 'package:food_ordering_app/models/dish.dart';
+import 'package:food_ordering_app/util/toast.dart';
 import 'package:food_ordering_app/widgets/catalog_image.dart';
-import 'package:food_ordering_app/widgets/msg_toast.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CatalogItemUser extends StatelessWidget {
@@ -66,11 +66,11 @@ class AddToCart extends StatelessWidget {
       onPressed: () {
         if (_cart.cart.findItemIndexFromCart(dish.dishId) == null) {
           CartModel().addToCart(dish);
-          msgToast('${dish.dishName} added in the cart');
+          toast('${dish.dishName} added in the cart', Colors.green);
         } else {
           CartModel()
               .addItemToCart(_cart.cart.findItemIndexFromCart(dish.dishId));
-          msgToast('${dish.dishName} added in the cart');
+          toast('${dish.dishName} added in the cart', Colors.green);
         }
       },
       style: ButtonStyle(

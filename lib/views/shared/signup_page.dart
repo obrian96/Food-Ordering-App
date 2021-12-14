@@ -6,7 +6,7 @@ import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/services/user_services.dart';
 import 'package:food_ordering_app/util/logcat.dart';
-import 'package:food_ordering_app/widgets/msg_toast.dart';
+import 'package:food_ordering_app/util/toast.dart';
 import 'package:uuid/uuid.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -202,39 +202,39 @@ class SignUpPage extends StatelessWidget {
       if (!RegExp(
               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
           .hasMatch(cEmail.text)) {
-        msgToast("Invalid email!");
+        toast("Invalid email!");
         return;
       }
 
       if (cPassword.text.length < 8) {
-        msgToast("Password length must be longer than 8 digits!");
+        toast("Password length must be longer than 8 digits!");
         return;
       } else if (cPassword.text != cConfirmPassword.text) {
-        msgToast("Password does not matched!");
+        toast("Password does not matched!");
         return;
       }
 
       UserServices userServices = new UserServices();
-      ApiResponse _apiResponse = await userServices.signup(
+      ApiResponse apiResponse = await userServices.signup(
         cUserId.text,
         cName.text,
         cEmail.text,
         cPassword.text,
       );
 
-      Log.e(TAG, '${_apiResponse.apiError}');
-      if ((_apiResponse.apiError as ApiError) == null) {
+      Log.e(TAG, '${apiResponse.apiError}');
+      if ((apiResponse.apiError as ApiError) == null) {
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/login',
           ModalRoute.withName('/home'),
         );
       } else {
-        var errorObj = _apiResponse.apiError as ApiError;
-        msgToast(errorObj.error);
+        var errorObj = apiResponse.apiError as ApiError;
+        toast(errorObj.error);
       }
     } else {
-      msgToast("Fields must not empty!");
+      toast("Fields must not empty!");
     }
   }
 }

@@ -1,19 +1,18 @@
 class Dish {
   final int dishId;
   final String dishName;
-  final int dishPrice;
   final int isAvailable;
   final String dishType;
-  final String dishRestId;
+  int quantity, dishPrice;
 
   Dish(
     this.dishId,
     this.dishName,
     this.dishPrice,
     this.isAvailable,
-    this.dishType,
-    this.dishRestId,
-  );
+    this.dishType, {
+    this.quantity,
+  });
 
   factory Dish.fromMap(Map<String, dynamic> json) => Dish(
         json['dish_id'],
@@ -21,7 +20,6 @@ class Dish {
         json['dish_price'],
         json['isAvailable'],
         json['dish_type'],
-        json['dish_rest_id'],
       );
 
   factory Dish.fromJson(Map<String, dynamic> json) => Dish(
@@ -30,6 +28,20 @@ class Dish {
         json['dish_price'],
         json['isAvailable'],
         json['dish_type'],
-        json['dish_rest_id'],
       );
+
+  get dishQuantity => quantity;
+
+  set dishQuantity(int dishQuantity) {
+    this.quantity = dishQuantity;
+  }
+
+  Map toJson() => {
+        'dish_id': dishId,
+        'dish_name': dishName,
+        'dish_price': dishPrice,
+        'isAvailable': isAvailable,
+        'dish_type': dishType,
+        'dish_quantity': dishQuantity,
+      };
 }

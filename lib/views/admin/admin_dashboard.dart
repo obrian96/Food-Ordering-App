@@ -6,8 +6,10 @@ import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/dish_list.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
+import 'package:food_ordering_app/util/toast.dart';
 import 'package:food_ordering_app/views/admin/admin_catalog_item.dart';
-import 'package:food_ordering_app/widgets/msg_toast.dart';
+import 'package:food_ordering_app/views/admin/admin_navigation_drawer.dart';
+import 'package:food_ordering_app/widgets/simple_card_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -17,24 +19,42 @@ class AdminDashboard extends StatefulWidget {
 }
 
 class _AdminDashboardState extends State<AdminDashboard> {
+  final List<String> listItems = [
+    'Order Management',
+    'Restaurant Menu Management',
+    'User Management',
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final DishList args = ModalRoute.of(context).settings.arguments as DishList;
     return Scaffold(
+      drawer: NavigationDrawerWidget(),
       backgroundColor: Color(0xfff5f5f5),
       appBar: AppBar(
-        leading: new IconButton(
-          icon: new Icon(Icons.account_circle),
-          onPressed: () {
-            _profileHandler(context);
-          },
-        ),
-        title: new Text("Swiggato - DashBoard"),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {})
+        title: new Text('Admin - Dashboard'),
+        actions: [
+          IconButton(
+            constraints: BoxConstraints.expand(width: 80),
+            icon: Icon(Icons.account_circle_rounded),
+            iconSize: 30,
+            onPressed: () {
+              _profileHandler(context);
+            },
+          ),
         ],
       ),
-      body: CatalogList(dishList: args),
+      body: Container(
+        padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return SimpleCardView(
+              index: index,
+              name: listItems[index],
+            );
+          },
+          itemCount: listItems.length,
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -51,7 +71,7 @@ void _profileHandler(BuildContext context) async {
   String _userId = (prefs.getString("user_id") ?? "");
   if (_userId == "") {
     Navigator.pushReplacementNamed(context, '/home');
-    msgToast("invalid Login State!");
+    toast("invalid Login State!");
   } else {
     UserServices userServices = new UserServices();
     ApiResponse _apiResponse = await userServices.details(_userId);
@@ -67,7 +87,7 @@ void _profileHandler(BuildContext context) async {
         '/home',
         ModalRoute.withName('/home'),
       );
-      msgToast("invalid Login State!");
+      toast("invalid Login State!");
     }
   }
 }

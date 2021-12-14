@@ -5,7 +5,7 @@ import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
 import 'package:food_ordering_app/util/logcat.dart';
-import 'package:food_ordering_app/widgets/msg_toast.dart';
+import 'package:food_ordering_app/util/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LandingPage extends StatefulWidget {
@@ -135,12 +135,12 @@ class _LandingPageState extends State<LandingPage> {
 
   Future<UserDetails> _getDetails(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String _userId = (prefs.getString("user_id") ?? "");
-    if (_userId.isEmpty) {
+    String userId = (prefs.getString("user_id") ?? "");
+    if (userId.isEmpty) {
       Navigator.pushReplacementNamed(context, '/home');
     } else {
       UserServices userServices = new UserServices();
-      ApiResponse _apiResponse = await userServices.details(_userId);
+      ApiResponse _apiResponse = await userServices.details(userId);
       // Log.e(TAG, '2) ' + (_apiResponse.ApiError as ApiError).error);
       if ((_apiResponse.apiError as ApiError) == null) {
         return _apiResponse.data as UserDetails;
@@ -148,7 +148,7 @@ class _LandingPageState extends State<LandingPage> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.remove('user_id');
         Navigator.pushReplacementNamed(context, '/home');
-        msgToast("invalid Login State!");
+        toast("invalid Login State!");
       }
     }
     return null;
@@ -158,7 +158,7 @@ class _LandingPageState extends State<LandingPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('user_id');
     Navigator.pushReplacementNamed(context, '/home');
-    msgToast("Logged Out!");
+    toast("Logged Out!", Colors.deepOrange);
   }
 }
 

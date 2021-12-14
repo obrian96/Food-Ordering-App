@@ -1,5 +1,3 @@
-import 'dart:developer' as developer;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_ordering_app/animation/fade_animation.dart';
@@ -7,10 +5,13 @@ import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/user.dart';
 import 'package:food_ordering_app/services/user_services.dart';
-import 'package:food_ordering_app/widgets/msg_toast.dart';
+import 'package:food_ordering_app/util/logcat.dart';
+import 'package:food_ordering_app/util/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
+  static const String TAG = 'login_page.dart';
+
   final TextEditingController cEmail = new TextEditingController();
   final TextEditingController cPassword = new TextEditingController();
 
@@ -191,24 +192,27 @@ class LoginPage extends StatelessWidget {
       if (!RegExp(
               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
           .hasMatch(cEmail.text)) {
-        msgToast("Invalid email!");
+        toast("Invalid email!");
         return;
       }
 
       if (cPassword.text.length < 8) {
-        msgToast("Wrong password!");
+        toast("Wrong password!");
         return;
       }
 
       UserServices userServices = new UserServices();
-      ApiResponse _apiResponse =
+      ApiResponse apiResponse =
           await userServices.login(cEmail.text, cPassword.text);
-      // print(_apiResponse.ApiError);
-      developer.log(_apiResponse.apiError.toString(), name: 'login_page.dart');
-      if (_apiResponse != null && (_apiResponse.apiError as ApiError) == null) {
+      if (apiResponse != null && (apiResponse.apiError as ApiError) == null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString("user_id", (_apiResponse.data as User).user_id);
-        int isAdminStored = (_apiResponse.data as User).isAdmin;
+        prefs.setString('user_id', (apiResponse.data as User).user_id);
+        prefs.setString('user_name', (apiResponse.data as User).user_name);
+        Log.i(TAG,
+            'Login Response Image: \n${(apiResponse.data as User).user_image}');
+        prefs.setString('user_image', (apiResponse.data as User).user_image);
+        prefs.setInt('isAdmin', (apiResponse.data as User).isAdmin);
+        int isAdminStored = (apiResponse.data as User).isAdmin;
         // Push this named route and remove all previous routes
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -216,14 +220,14 @@ class LoginPage extends StatelessWidget {
           (Route<dynamic> route) => false, // Remove all previous routes
           arguments: isAdminStored,
         );
-        // }
+        toast('Login Successful', Colors.green);
       } else {
-        var errorObj = _apiResponse.apiError as ApiError;
-        msgToast(errorObj.error);
-        developer.log('Server response is null', name: 'login_page.dart');
+        var errorObj = apiResponse.apiError as ApiError;
+        toast(errorObj.error);
+        Log.e(TAG, 'Exception: $errorObj');
       }
     } else {
-      msgToast("Fields must not empty!");
+      toast("Fields must not empty!");
     }
   }
 }

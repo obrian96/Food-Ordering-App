@@ -1,12 +1,13 @@
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
+import 'package:food_ordering_app/models/server_response.dart';
 import 'package:food_ordering_app/models/user.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/util/logcat.dart';
-import 'package:food_ordering_app/widgets/msg_toast.dart';
+import 'package:food_ordering_app/util/toast.dart';
 import 'package:http/http.dart' as http;
 
 class UserServices {
@@ -56,7 +57,7 @@ class UserServices {
   }
 
   Future<ApiResponse> login(String userName, String userPass) async {
-    ApiResponse _apiResponse = new ApiResponse();
+    ApiResponse apiResponse = new ApiResponse();
     Uri url = Uri.parse(BASE_URL + '/login');
 
     try {
@@ -73,21 +74,20 @@ class UserServices {
 
       switch (response.statusCode) {
         case 200:
-          _apiResponse.data = User.fromJson(json.decode(response.body));
-          msgToast('Login Successful');
+          apiResponse.data = User.fromJson(json.decode(response.body));
           break;
         case 401:
-          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
+          apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
         default:
-          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
+          apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
       }
     } catch (e) {
       // _apiResponse.ApiError = ApiError(error: "Server error. Please retry");
-      Log.e(TAG, "Debug Log: " + e.toString());
+      Log.e(TAG, 'Exception: $e');
     }
-    return _apiResponse;
+    return apiResponse;
   }
 
   Future<ApiResponse> signup(
@@ -113,7 +113,7 @@ class UserServices {
       switch (response.statusCode) {
         case 200:
           _apiResponse.data = User.fromJson(json.decode(response.body));
-          msgToast('SignUp Successful');
+          toast('SignUp Successful', Colors.green);
           break;
         case 409:
           _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
@@ -132,39 +132,73 @@ class UserServices {
   Future<ApiResponse> user_detail_form(String userId, String email,
       String phone, String address, String pincode) async {
 //    int isAvailable= 0;
-    ApiResponse _apiResponse = new ApiResponse();
+    Log.d(TAG, 'Pincode: $pincode');
+    ApiResponse apiResponse = new ApiResponse();
 
-    Uri url = Uri.parse(BASE_URL);
+    Uri url = Uri.parse(BASE_URL + '/userdetails');
     try {
       final http.Response response = await http.put(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, dynamic>{
           'user_id': userId,
           'user_email': email,
           'user_phno': phone,
           'user_addline': address,
-          'user_pincode': pincode
+          'user_pincode': pincode,
         }),
       );
 
       switch (response.statusCode) {
         case 200:
-          _apiResponse.data = User.fromJson(json.decode(response.body));
-          msgToast('Dish Edit Successful');
+          apiResponse.data =
+              ServerResponse.fromJson(json.decode(response.body));
           break;
-        case 409:
-          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
+        case 401:
+          apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
         default:
-          _apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
+          apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
       }
-    } on SocketException {
-      _apiResponse.apiError = ApiError(error: "Server error. Please retry");
+    } catch (e) {
+      Log.e(TAG, 'Line 167: Exception: $e');
+      apiResponse.apiError = ApiError(error: '$e');
     }
-    return _apiResponse;
+    return apiResponse;
+  }
+
+  Future<ApiResponse> addNewOrder(
+      String orderQty, String orderDishId, String orderUserId) async {
+    ApiResponse apiResponse = new ApiResponse();
+    Uri url = Uri.parse(BASE_URL + '/orderhstry');
+    try {
+      final http.Response response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'order_qty': orderQty,
+          'order_dish_id': orderDishId,
+          'order_user_id': orderUserId,
+        }),
+      );
+      switch (response.statusCode) {
+        case 200:
+          apiResponse.data = User.fromJson(json.decode(response.body));
+          toast('Order Sent!', Colors.green);
+          break;
+        default:
+          apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
+          break;
+      }
+    } catch (e) {
+      Log.e(TAG, '$e');
+      apiResponse.apiError = ApiError(error: '$e');
+    }
+    return apiResponse;
   }
 }

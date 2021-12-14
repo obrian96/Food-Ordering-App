@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/models/orders_model.dart';
+import 'package:food_ordering_app/models/order_item.dart';
 import 'package:food_ordering_app/services/order_services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -31,7 +31,7 @@ class OrdersList extends StatefulWidget {
 class _OrdersListState extends State<OrdersList> {
   OrderServices get service => GetIt.I<OrderServices>();
 
-  List<OrdersModel> items = [];
+  List<OrderItem> items = [];
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _OrdersListState extends State<OrdersList> {
 }
 
 class OrdersItem extends StatelessWidget {
-  final OrdersModel order;
+  final OrderItem order;
 
   const OrdersItem({Key key, @required this.order})
       : assert(order != null),

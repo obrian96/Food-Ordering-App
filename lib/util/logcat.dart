@@ -27,12 +27,13 @@ class Log {
     );
   }
 
-  static void e(String tag, String error) {
+  static void e(String tag, String error, {StackTrace stackTrace}) {
     developer.log('', name: 'Logcat');
     developer.log(
       tag + ': ',
       name: 'Error',
       error: '\n' + error + '\n\n---',
+      stackTrace: stackTrace,
     );
   }
 }

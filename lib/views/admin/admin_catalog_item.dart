@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/models/dish.dart';
+import 'package:food_ordering_app/util/soft_utils.dart';
 import 'package:food_ordering_app/widgets/catalog_image.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -18,8 +19,7 @@ class CatalogItemAdmin extends StatelessWidget {
         Hero(
           tag: Key(dish.dishId.toString()),
           child: CatalogImage(
-            image:
-                "https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900",
+            image: SoftUtils().loadImage(dish.dishImage),
           ),
         ),
         Expanded(

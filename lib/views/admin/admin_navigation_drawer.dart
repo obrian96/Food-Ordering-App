@@ -13,91 +13,92 @@ class NavigationDrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: LayoutBuilder(
-        builder: (context, constraint) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraint.maxHeight),
-              child: IntrinsicHeight(
-                child: Column(
-                  children: [
-                    DrawerHeader(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            "assets/app-logo-62-removebg-preview-square.png",
+    return SafeArea(
+      child: Drawer(
+        child: LayoutBuilder(
+          builder: (context, constraint) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      DrawerHeader(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                              "assets/app-logo-62-removebg-preview-square.png",
+                            ),
+                            fit: BoxFit.fitHeight,
                           ),
-                          fit: BoxFit.fitHeight,
                         ),
+                        child: null,
                       ),
-                      margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                      child: null,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.home),
-                      title: Text("Dashboard"),
-                      onTap: () {
-                        Navigator.pop(context);
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //   builder: (context) => Dashboard(),
-                        // ));
-                      },
-                    ),
-                    ListTile(
-                      title: Text(
-                        'Admin Actions',
-                        style: TextStyle(color: Colors.black54),
+                      ListTile(
+                        leading: Icon(Icons.home),
+                        title: Text("Dashboard"),
+                        onTap: () {
+                          Navigator.pop(context);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (context) => Dashboard(),
+                          // ));
+                        },
                       ),
-                      dense: true,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.settings),
-                      title: Text("Order Management"),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/adminOrderManagement');
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.settings),
-                      title: Text("Restaurant Menu Management"),
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, '/adminRestaurantMenuManagement');
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.settings),
-                      title: Text("User Management"),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/adminUserManagement');
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.account_circle_rounded),
-                      title: Text("View Profile"),
-                      onTap: () {
-                        _profileHandler(context);
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //   builder: (context) => ProfileScreen(),
-                        // ));
-                      },
-                    ),
-                    const Expanded(child: SizedBox()),
-                    const Divider(height: 1.0, color: Colors.grey),
-                    ListTile(
-                      leading: Icon(Icons.exit_to_app),
-                      title: Text("Logout"),
-                      onTap: () {
-                        showAlertDialog(context);
-                      },
-                    )
-                  ],
+                      ListTile(
+                        title: Text(
+                          'Admin Actions',
+                          style: TextStyle(color: Colors.black54),
+                        ),
+                        dense: true,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.settings),
+                        title: Text("Order Management"),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/adminOrderManagement');
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.settings),
+                        title: Text("Restaurant Menu Management"),
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, '/adminRestaurantMenuManagement');
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.settings),
+                        title: Text("User Management"),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/adminUserManagement');
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.account_circle_rounded),
+                        title: Text("View Profile"),
+                        onTap: () {
+                          _profileHandler(context);
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //   builder: (context) => ProfileScreen(),
+                          // ));
+                        },
+                      ),
+                      const Expanded(child: SizedBox()),
+                      const Divider(height: 1.0, color: Colors.grey),
+                      ListTile(
+                        leading: Icon(Icons.exit_to_app),
+                        title: Text("Logout"),
+                        onTap: () {
+                          showAlertDialog(context);
+                        },
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

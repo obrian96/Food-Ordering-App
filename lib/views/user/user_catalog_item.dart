@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/models/cart.dart';
 import 'package:food_ordering_app/models/dish.dart';
+import 'package:food_ordering_app/util/logcat.dart';
+import 'package:food_ordering_app/util/soft_utils.dart';
 import 'package:food_ordering_app/util/toast.dart';
-import 'package:food_ordering_app/widgets/catalog_image.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CatalogItemUser extends StatelessWidget {
+  static const String TAG = 'user_catalog_item.dart';
+
   final Dish dish;
 
   const CatalogItemUser({Key key, @required this.dish})
@@ -13,40 +16,46 @@ class CatalogItemUser extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return VxBox(
+  Widget build(context) {
+    Log.d(TAG, 'Dish image: ${dish.dishImage}');
+    return SafeArea(
+      child: VxBox(
         child: Row(
-      children: [
-        Hero(
-          tag: Key(dish.dishId.toString()),
-          child: CatalogImage(
-            image:
-                "https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900",
-          ),
-        ),
-        Expanded(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            dish.dishName.text.lg.color(Color(0xff403b58)).bold.make(),
-            dish.dishType.text
-                .textStyle(context.captionStyle)
-                .color(Color(0xff403b58))
-                .make(),
-            10.heightBox,
-            ButtonBar(
-              alignment: MainAxisAlignment.spaceBetween,
-              buttonPadding: EdgeInsets.zero,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: SoftUtils().loadImage(
+                dish.dishImage,
+                width: 100.0,
+                height: 100.0,
+                fit: BoxFit.fill,
+              ),
+            ).p16(),
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                "\K${dish.dishPrice}".text.xl.bold.make(),
-                AddToCart(dish: dish),
+                dish.dishName.text.lg.color(Color(0xff403b58)).bold.make(),
+                dish.dishType.text
+                    .textStyle(context.captionStyle)
+                    .color(Color(0xff403b58))
+                    .make(),
+                10.heightBox,
+                ButtonBar(
+                  alignment: MainAxisAlignment.spaceBetween,
+                  buttonPadding: EdgeInsets.zero,
+                  children: [
+                    "\K${dish.dishPrice}".text.xl.bold.make(),
+                    AddToCart(dish: dish),
+                  ],
+                ).pOnly(right: 16.0)
               ],
-            ).pOnly(right: 16.0)
+            ))
           ],
-        ))
-      ],
-    )).color(Colors.white).roundedLg.square(140).make().py8();
+        ),
+      ).color(Colors.white).rounded.square(140).shadowSm.make().p8(),
+    );
   }
 }
 

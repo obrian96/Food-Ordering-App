@@ -29,6 +29,7 @@ class _ProfilePage extends State<ProfilePage> {
         appBar: AppBar(
           elevation: 0,
           title: new Text('Profile Page'),
+          centerTitle: true,
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -49,18 +50,18 @@ class _ProfilePage extends State<ProfilePage> {
             FutureBuilder(
                 future: loadProfileImage(),
                 builder: (context, snapshot) {
-                  switch (SoftUtils.state(snapshot)) {
-                    case SoftUtils.COMPLETE:
+                  switch (SoftUtils().state(snapshot)) {
+                    case FutureState.COMPLETE:
                       return CircleAvatar(
                         radius: 50.0,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(50.0),
-                          child: SoftUtils.loadImage(snapshot.data),
+                          child: SoftUtils().loadImage(snapshot.data),
                         ),
                       );
 
-                    case SoftUtils.UNKNOWN:
-                    case SoftUtils.ERROR:
+                    case FutureState.UNKNOWN:
+                    case FutureState.ERROR:
                       Log.e(TAG, 'Image loading error');
                       return CircleAvatar(
                         radius: 50.0,
@@ -68,7 +69,7 @@ class _ProfilePage extends State<ProfilePage> {
                             AssetImage('assets/profile_placeholder.png'),
                       );
 
-                    case SoftUtils.LOADING:
+                    case FutureState.LOADING:
                     default:
                       return CircularProgressIndicator();
                   }

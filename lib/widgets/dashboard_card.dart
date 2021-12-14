@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:food_ordering_app/util/logcat.dart';
 
 class SimpleCardView extends StatelessWidget {
+  static const String TAG = 'dashboard_card.dart';
+
   final int index;
   final String name;
-
-  static const String TAG = 'simple_card_view.dart';
 
   SimpleCardView({this.index, this.name});
 

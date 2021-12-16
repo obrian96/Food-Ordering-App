@@ -24,16 +24,20 @@ class _DishEditFormState extends State<DishEditForm> {
     int args = ModalRoute.of(context).settings.arguments as int;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff409439),
-        leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-        title: Text("             EDIT DISH"),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {})
-        ],
+        // backgroundColor: Color(0xff409439),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text("Edit Dish"),
+        centerTitle: true,
+        // actions: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: <Widget>[
+          children: [
             Card(
               child: TextField(
                 controller: dishName,

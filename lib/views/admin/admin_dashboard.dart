@@ -27,6 +27,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
   @override
   Widget build(context) {
+    final DishList args = ModalRoute.of(context).settings.arguments as DishList;
     return Scaffold(
       drawer: NavigationDrawerWidget(),
       backgroundColor: Color(0xfff5f5f5),
@@ -48,7 +49,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
         child: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
-            return SimpleCardView(
+            return DashboardCard(
               index: index,
               name: listItems[index],
             );

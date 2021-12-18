@@ -5,6 +5,7 @@ import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
 import 'package:food_ordering_app/util/logcat.dart';
+import 'package:food_ordering_app/util/soft_utils.dart';
 import 'package:food_ordering_app/util/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,7 +33,8 @@ class _LandingPageState extends State<LandingPage> {
                 ),
               );
             } else if (snapshot.hasData) {
-              final userDetails = snapshot.data as UserDetails;
+              List args = snapshot.data;
+              UserDetails userDetails = args[0];
               return Stack(
                 children: [
                   ClipPath(
@@ -43,17 +45,20 @@ class _LandingPageState extends State<LandingPage> {
                     width: 375.0,
                     top: MediaQuery.of(context).size.height / 3.5,
                     child: Column(
-                      children: <Widget>[
+                      children: [
                         Container(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child:
+                                SoftUtils().loadProfileImage(snapshot.data[1]),
+                          ),
                           width: 150.0,
                           height: 150.0,
                           decoration: BoxDecoration(
                               color: Color(0xfffeb324),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/profile_placeholder.png'),
-                                fit: BoxFit.cover,
-                              ),
+                              // image: DecorationImage(
+                              //   fit: BoxFit.cover,
+                              // ),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(75.0)),
                               boxShadow: [
@@ -133,17 +138,18 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  Future<UserDetails> _getDetails(BuildContext context) async {
+  Future _getDetails(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String profileImage = await SoftUtils().getUserImage();
     String userId = (prefs.getString("user_id") ?? "");
     if (userId.isEmpty) {
       Navigator.pushReplacementNamed(context, '/home');
     } else {
       UserServices userServices = new UserServices();
-      ApiResponse _apiResponse = await userServices.details(userId);
+      ApiResponse apiResponse = await userServices.details(userId);
       // Log.e(TAG, '2) ' + (_apiResponse.ApiError as ApiError).error);
-      if ((_apiResponse.apiError as ApiError) == null) {
-        return _apiResponse.data as UserDetails;
+      if ((apiResponse.apiError as ApiError) == null) {
+        return [apiResponse.data as UserDetails, profileImage];
       } else {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.remove('user_id');
@@ -151,7 +157,7 @@ class _LandingPageState extends State<LandingPage> {
         toast("invalid Login State!");
       }
     }
-    return null;
+    return [null, profileImage];
   }
 
   void _logoutHandler(BuildContext context) async {

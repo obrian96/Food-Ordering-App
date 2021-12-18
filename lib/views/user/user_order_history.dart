@@ -1,145 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/models/order_item.dart';
-import 'package:food_ordering_app/services/order_services.dart';
-import 'package:get_it/get_it.dart';
-import 'package:velocity_x/velocity_x.dart';
+import 'package:food_ordering_app/models/order.dart';
+import 'package:food_ordering_app/util/logcat.dart';
+import 'package:food_ordering_app/util/soft_utils.dart';
+import 'package:food_ordering_app/widgets/orders_card.dart';
 
-class OrderHistoryPage extends StatelessWidget {
+class OrderHistoryPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
+  _OrderHistoryPage createState() => _OrderHistoryPage();
+}
+
+class _OrderHistoryPage extends State<OrderHistoryPage> {
+  static const String TAG = 'user_order_history.dart';
+
+  @override
+  Widget build(context) {
+    List args = ModalRoute.of(context).settings.arguments;
+    String userId = args[0];
+    String userName = args[1];
+    Log.d(TAG, 'userId: $userId');
     return Scaffold(
-      backgroundColor: Color(0xfff5f5f5),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: "Your Orders".text.make(),
+        title: Text('$userName'),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 20,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
-      body: Column(
-        children: [
-          OrdersList().p32().expand(),
-        ],
+      body: FutureBuilder(
+        future: SoftUtils().getUserOrders(userId),
+        builder: (context, snapshot) {
+          switch (SoftUtils().state(snapshot)) {
+            case FutureState.COMPLETE:
+              return Container(
+                padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    Order order = snapshot.data[index];
+                    Log.d(
+                      TAG,
+                      'Order ID: ${order.id}, '
+                      'Order Statue: ${order.status}, '
+                      'Order Total Price: ${order.totalPrice}, '
+                      'Order Start Date: ${order.startDate}, '
+                      'Order End Date: ${order.endDate}, ',
+                    );
+                    return OrdersCard(
+                      orderId: order.id,
+                      orderStatus: order.status,
+                      orderTotalPrice: order.totalPrice,
+                      orderStartDate: order.startDate,
+                      orderEndDate: order.endDate,
+                    );
+                  },
+                  itemCount: snapshot.data == null ? 0 : snapshot.data.length,
+                ),
+              );
+
+            case FutureState.UNKNOWN:
+            case FutureState.ERROR:
+              Log.e(TAG, '${snapshot.error}');
+              return Container(
+                child: Center(
+                  child: Text('Unable to load data!'),
+                ),
+              );
+
+            case FutureState.LOADING:
+            default:
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+          }
+        },
       ),
-      //bottomNavigationBar: CartTotal(),
     );
   }
 }
-
-class OrdersList extends StatefulWidget {
-  @override
-  _OrdersListState createState() => _OrdersListState();
-}
-
-class _OrdersListState extends State<OrdersList> {
-  OrderServices get service => GetIt.I<OrderServices>();
-
-  List<OrderItem> items = [];
-
-  @override
-  void initState() {
-    // items = OrderServices.getOrderItems();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        shrinkWrap: true,
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          final order = items[index];
-          return InkWell(
-            child: OrdersItem(order: order),
-          );
-        });
-  }
-}
-
-class OrdersItem extends StatelessWidget {
-  final OrderItem order;
-
-  const OrdersItem({Key key, @required this.order})
-      : assert(order != null),
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      // child: Row(
-      //   children: [
-      //     Hero(
-      //       tag: Key(order.id.toString()),
-      //       child: Image.network(
-      //         order.image,
-      //       ).box.rounded.p8.color(Color(0xfff5f5f5)).make().p16().w40(context),
-      //     ),
-      //     Expanded(
-      //       child: Column(
-      //         crossAxisAlignment: CrossAxisAlignment.start,
-      //         mainAxisAlignment: MainAxisAlignment.center,
-      //         children: [
-      //           order.title.text.lg.color(Color(0xff403b58)).bold.make(),
-      //           5.heightBox,
-      //           "${order.quantity} \× \K${order.price}"
-      //               .text
-      //               .color(Color(0xff403b58))
-      //               .lg
-      //               .make(),
-      //           5.heightBox,
-      //           // ButtonBar(
-      //           //   alignment: MainAxisAlignment.spaceBetween,
-      //           //   buttonPadding: EdgeInsets.zero,
-      //           //   children: [
-      //           //     RemoveButton(),
-      //           //   ],
-      //           // ).pOnly(right: 16.0)
-      //         ],
-      //       ),
-      //     ),
-      //   ],
-      // ),
-    );
-  }
-}
-
-// class RemoveButton extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//
-//     return ElevatedButton(
-//       onPressed: (){
-//
-//       },
-//       style: ButtonStyle(
-//         backgroundColor: MaterialStateProperty.all(
-//           Vx.indigo500,
-//         ),
-//         shape: MaterialStateProperty.all(
-//           StadiumBorder(),
-//         ),
-//       ),
-//       child: "Remove".text.make(),
-//     );
-//   }
-// }
-
-// class CartTotal extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//
-//     return SizedBox(
-//       height: 100,
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceAround,
-//         children: [
-//           "\₹1490".text.xl5.color(Color(0xff403b58)).make(),
-//           ElevatedButton(
-//             onPressed: (){
-//               Scaffold.of(context).showSnackBar(SnackBar(content: "Buying not supported".text.make()));
-//             },
-//             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xff403b58))),
-//             child: "Buy".text.white.make(),
-//           ).w32(context),
-//         ],
-//       ),
-//     );
-//   }
-// }

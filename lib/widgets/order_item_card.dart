@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/util/soft_utils.dart';
-import 'package:food_ordering_app/util/toast.dart';
 
 class OrderItemCard extends StatelessWidget {
   static const String TAG = 'order_management_card.dart';
@@ -31,9 +30,6 @@ class OrderItemCard extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.grey[200],
           borderRadius: BorderRadius.circular(8.0),
-          onTap: () {
-            toast('Go to dish edit page!', Colors.green);
-          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

@@ -28,7 +28,7 @@ class CatalogItemUser extends StatelessWidget {
                 dish.dishImage,
                 width: 100.0,
                 height: 100.0,
-                fit: BoxFit.fill,
+                fit: BoxFit.fitHeight,
               ),
             ).p16(),
             Expanded(

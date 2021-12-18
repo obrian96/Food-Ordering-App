@@ -6,6 +6,8 @@ import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/dish.dart';
 import 'package:food_ordering_app/models/dish_list.dart';
+import 'package:food_ordering_app/models/server_response.dart';
+import 'package:food_ordering_app/util/logcat.dart';
 import 'package:food_ordering_app/util/toast.dart';
 import 'package:http/http.dart' as http;
 
@@ -47,8 +49,8 @@ class RestServices {
     return _apiResponse;
   }
 
-  Future<ApiResponse> addDish(String dishName, int dishPrice, String dishType,
-      String restaurantId) async {
+  Future<ApiResponse> addDish(String dishImage, String dishName, int dishPrice,
+      String dishType, String adminId) async {
     int isAvailable = 1;
     ApiResponse _apiResponse = new ApiResponse();
     Uri url = Uri.parse(BASE_URL + '/dishes');
@@ -58,13 +60,13 @@ class RestServices {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, dynamic>{
           //'dish_id': dish_id,
+          'dish_image': dishImage,
           'dish_name': dishName,
-          'dish_price': dishPrice.toString(),
-          'isAvailable': isAvailable.toString(),
+          'dish_price': dishPrice,
+          'isAvailable': isAvailable,
           'dish_type': dishType,
-          'dish_rest_id': restaurantId
         }),
       );
 
@@ -88,14 +90,10 @@ class RestServices {
     return _apiResponse;
   }
 
-  Future<ApiResponse> editDish(
-      String dishName,
-      String dishPrice,
-      String isAvailable,
-      String dishType,
-      String dishId,
-      String dishRestId) async {
+  Future editDish(String dishImage, String dishName, int dishPrice,
+      int isAvailable, String dishType, int dishId, String adminId) async {
 //    int isAvailable= 0;
+    Log.i(TAG, '${dishImage}');
     ApiResponse _apiResponse = new ApiResponse();
 
     Uri url = Uri.parse(BASE_URL + '/dishes/$dishId');
@@ -105,12 +103,13 @@ class RestServices {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, dynamic>{
+          'dish_image': dishImage,
           'dish_name': dishName,
           'dish_price': dishPrice,
           'isAvailable': isAvailable,
           'dish_type': dishType,
-          'dish_rest_id': dishRestId,
+          'dish_rest_id': adminId,
         }),
       );
 
@@ -132,5 +131,38 @@ class RestServices {
       _apiResponse.apiError = ApiError(error: "Server error. Please retry");
     }
     return _apiResponse;
+  }
+
+  Future deleteDish(dishId) async {
+    ApiResponse apiResponse = new ApiResponse();
+
+    Uri url = Uri.parse(BASE_URL + '/dishes/$dishId');
+    try {
+      final http.Response response = await http.delete(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{}),
+      );
+
+      switch (response.statusCode) {
+        case 200:
+          apiResponse.data =
+              ServerResponse.fromJson(json.decode(response.body));
+          break;
+        case 409:
+          apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
+          //msgToast('login failed');
+          break;
+        default:
+          apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
+          // msgToast('login failed');
+          break;
+      }
+    } on SocketException {
+      apiResponse.apiError = ApiError(error: "Server error. Please retry");
+    }
+    return apiResponse;
   }
 }

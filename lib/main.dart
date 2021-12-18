@@ -50,7 +50,6 @@ class MyApp extends StatelessWidget {
           '/loadDash': (context) => DashboardLoader(),
           '/dishEditForm': (context) => DishEditForm(),
           '/dishAddForm': (context) => DishAddForm(),
-          '/userDetailsForm': (context) => UserDetailForm(),
           // Admin order management page
           '/adminOrderManagement': (context) => AdminOrderManagement(),
           '/adminOrders': (context) => AdminOrders(),

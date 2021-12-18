@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_ordering_app/models/api_error.dart';
+import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/models/dish.dart';
 import 'package:food_ordering_app/models/order_item.dart';
+import 'package:food_ordering_app/models/server_response.dart';
 import 'package:food_ordering_app/util/logcat.dart';
 import 'package:food_ordering_app/util/soft_utils.dart';
+import 'package:food_ordering_app/util/toast.dart';
 import 'package:food_ordering_app/widgets/order_item_card.dart';
 
 class AdminOrderItems extends StatefulWidget {
@@ -47,6 +51,7 @@ class _AdminOrderItems extends State<AdminOrderItems> {
               case FutureState.COMPLETE:
                 List<OrderItem> orderItems = snapshot.data[0];
                 List<Dish> dishList = snapshot.data[1];
+                int isAdmin = snapshot.data[2];
                 return Column(
                   children: [
                     Row(
@@ -72,11 +77,27 @@ class _AdminOrderItems extends State<AdminOrderItems> {
                                         fontSize: 17,
                                       ),
                                     ),
-                                    Text(
-                                      'Status: ${status[orderStatus]}',
-                                      style: const TextStyle(
-                                        fontSize: 17,
-                                      ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Status: ${status[orderStatus]}',
+                                          style: const TextStyle(
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible: isAdmin == 1 ? true : false,
+                                          child: OutlinedButton(
+                                            child: Text('Change Status'),
+                                            onPressed: () {
+                                              _changeStatus(context, orderId,
+                                                  orderStatus);
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Text(
                                       'Total Price: ${orderTotalPrice}',
@@ -166,7 +187,67 @@ class _AdminOrderItems extends State<AdminOrderItems> {
     List<Object> data = await SoftUtils().getOrderItems(orderId);
     orderItems = data[0];
     dishes = data[1];
+    int isAdmin = data[2];
     Log.i(TAG, '_getOrderItems(orderId): ${orderItems[0].price}');
-    return [orderItems, dishes];
+    return [orderItems, dishes, isAdmin];
+  }
+
+  Future _changeStatus(context, orderId, orderStatus) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Status'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const [
+                Text("Change this order status to..."),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text('New'),
+              onPressed: () {
+                Navigator.pop(context, 0);
+                _handleSubmit(context, orderId, 0);
+              },
+            ),
+            TextButton(
+              child: Text('Processing'),
+              onPressed: () {
+                Navigator.pop(context, 1);
+                _handleSubmit(context, orderId, 1);
+              },
+            ),
+            TextButton(
+              child: Text('Delivered'),
+              onPressed: () {
+                Navigator.pop(context, 2);
+                _handleSubmit(context, orderId, 2);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future _handleSubmit(context, orderId, orderStatus) async {
+    ApiResponse apiResponse =
+        await SoftUtils().changeOrderStatus(orderId, orderStatus);
+    if (apiResponse != null && (apiResponse.apiError as ApiError) == null) {
+      toast('${(apiResponse.data as ServerResponse).message}', Colors.green);
+      // Navigator.pushReplacementNamed(context, '/adminOrderManagement');
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/adminOrderManagement',
+        ModalRoute.withName('/adminDash'),
+      );
+    } else {
+      Log.e(TAG, '${(apiResponse.apiError as ApiError).error}');
+      toast('${(apiResponse.apiError as ApiError).error}', Colors.red);
+    }
   }
 }

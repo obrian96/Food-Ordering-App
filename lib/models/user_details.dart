@@ -1,16 +1,24 @@
 class UserDetails {
-  final String user_id;
-  final String user_email;
-  final String user_phno;
-  final String user_addline;
-  final int pincode;
-  final String join_dt;
-  final String user_name;
-  final String user_pass;
-  final int isAdmin;
+  String user_id;
+  String user_email;
+  String user_phno;
+  String user_addline;
+  int pincode;
+  String join_dt;
+  String user_name;
+  String user_pass;
+  int isAdmin;
 
-  UserDetails(this.user_id, this.user_email, this.user_phno, this.user_addline,
-      this.pincode, this.join_dt, this.user_name, this.user_pass, this.isAdmin);
+  UserDetails(
+      [this.user_id,
+      this.user_email,
+      this.user_phno,
+      this.user_addline,
+      this.pincode,
+      this.join_dt,
+      this.user_name,
+      this.user_pass,
+      this.isAdmin]);
 
   factory UserDetails.fromMap(Map<String, dynamic> json) {
     return UserDetails(

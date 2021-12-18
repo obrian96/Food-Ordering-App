@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -8,8 +9,11 @@ import 'package:food_ordering_app/models/dish.dart';
 import 'package:food_ordering_app/models/order.dart';
 import 'package:food_ordering_app/models/order_item.dart';
 import 'package:food_ordering_app/models/order_list.dart';
+import 'package:food_ordering_app/models/server_response.dart';
 import 'package:food_ordering_app/models/user.dart';
 import 'package:food_ordering_app/services/order_services.dart';
+import 'package:food_ordering_app/services/rest_services.dart';
+import 'package:food_ordering_app/services/user_services.dart';
 import 'package:food_ordering_app/util/logcat.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,19 +43,30 @@ class SoftUtils {
     }
   }
 
-  Image loadImage(String base64UriString, {width, height, fit}) {
+  Image loadImage(String base64UriString, {width, height, fit, placeholder}) {
     Image image;
     if (base64UriString != null && base64UriString.isNotEmpty) {
       image = Image.memory(
         base64.decode(base64UriString.split(',').last),
         width: width,
         height: height,
-        fit: fit,
+        fit: BoxFit.fitHeight,
+        gaplessPlayback: true,
       );
     } else {
-      image = Image.asset('assets/profile_placeholder.png');
+      image = Image.asset(
+        placeholder ?? 'assets/profile_placeholder.png',
+        width: 100.0,
+        height: 100.0,
+        fit: BoxFit.fitHeight,
+        gaplessPlayback: true,
+      );
     }
     return image;
+  }
+
+  Image loadProfileImage(String profileImage) {
+    return loadImage(profileImage);
   }
 
   Uint8List loadUint8ListImage(String base64UriString) =>
@@ -69,6 +84,9 @@ class SoftUtils {
   Future getUserImage() async =>
       await (await SharedPreferences.getInstance()).getString('user_image');
 
+  Future getIsAdmin() async =>
+      await (await SharedPreferences.getInstance()).getInt('isAdmin');
+
   Future getOrderedUserList() async {
     String userId = await getUserId();
     ApiResponse apiResponse = await OrderServices().getOrderedUserList(userId);
@@ -76,16 +94,26 @@ class SoftUtils {
     if (apiResponse != null && (apiResponse.apiError as ApiError) == null) {
       userList = apiResponse.data;
     } else {
-      Log.e(TAG, '${(apiResponse.data as ApiError).error}');
+      Log.e(TAG, '${(apiResponse.apiError as ApiError).error}');
+    }
+    return userList;
+  }
+
+  Future getUserList() async {
+    String userId = await getUserId();
+    ApiResponse apiResponse = await UserServices().getAllUser(userId);
+    List<User> userList = [];
+    if (apiResponse != null && (apiResponse.apiError as ApiError) == null) {
+      userList = apiResponse.data;
+    } else {
+      Log.e(TAG, '${(apiResponse.apiError as ApiError).error}');
     }
     return userList;
   }
 
   Future getUserOrders(userId) async {
-    String adminId = await SoftUtils().getUserId();
     Log.d(TAG, 'User id: $userId');
-    ApiResponse apiResponse =
-        await OrderServices().getOrderList(adminId, userId);
+    ApiResponse apiResponse = await OrderServices().getOrderList(userId);
     List<Order> orderList = [];
     if (apiResponse != null && (apiResponse.apiError as ApiError) == null) {
       orderList = apiResponse.data as List<Order>;
@@ -100,9 +128,8 @@ class SoftUtils {
   }
 
   Future getOrderItems(orderId) async {
-    String adminId = await SoftUtils().getUserId();
-    ApiResponse apiResponse =
-        await OrderServices().getOrderItems(adminId, orderId);
+    int isAdmin = await getIsAdmin();
+    ApiResponse apiResponse = await OrderServices().getOrderItems(orderId);
     List<OrderItem> orderItems = [];
     List<Dish> dishList = [];
     if (apiResponse != null && (apiResponse.apiError as ApiError) == null) {
@@ -117,6 +144,38 @@ class SoftUtils {
           'Future getOrderItems(orderId) async {...} Exception: '
           '${(apiResponse.apiError as ApiError).error}');
     }
-    return [orderItems, dishList];
+    return [orderItems, dishList, isAdmin];
+  }
+
+  Future imageFileToBase64String(File image) async {
+    // Log.i(TAG, '$image');
+    List<int> imageBytes = image.readAsBytesSync();
+    String base64Image =
+        ('data:image/jpeg;base64,' + base64Encode(imageBytes)).trim();
+    // Log.i(TAG, '$base64Image');
+    // await new Future.delayed(const Duration(seconds: 5));
+    return [true, base64Image];
+  }
+
+  Future changeUserRole(String userId, int isAdmin) async {
+    ApiResponse apiResponse = await UserServices().changeRole(userId, isAdmin);
+    if (apiResponse != null && (apiResponse.apiError as ApiError) == null) {
+      Log.i(TAG, '${(apiResponse.data as ServerResponse).message}');
+    } else {
+      Log.e(TAG, '${(apiResponse.apiError as ApiError).error}');
+      return false;
+    }
+    return true;
+  }
+
+  Future changeOrderStatus(orderId, orderStatus) async {
+    ApiResponse apiResponse =
+        await UserServices().changeOrderStatus(orderId, orderStatus);
+    return apiResponse;
+  }
+
+  Future deleteDish(dishId) async {
+    ApiResponse apiResponse = await RestServices().deleteDish(dishId);
+    return apiResponse;
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/models/dish.dart';
 import 'package:food_ordering_app/util/soft_utils.dart';
-import 'package:food_ordering_app/widgets/catalog_image.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CatalogItemAdmin extends StatelessWidget {
@@ -16,12 +15,16 @@ class CatalogItemAdmin extends StatelessWidget {
     return VxBox(
         child: Row(
       children: [
-        Hero(
-          tag: Key(dish.dishId.toString()),
-          child: CatalogImage(
-            image: SoftUtils().loadImage(dish.dishImage),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10.0),
+          child: SoftUtils().loadImage(
+            dish.dishImage,
+            width: 100.0,
+            height: 100.0,
+            fit: BoxFit.fitHeight,
+            placeholder: 'assets/food.png',
           ),
-        ),
+        ).p16(),
         Expanded(
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +41,7 @@ class CatalogItemAdmin extends StatelessWidget {
               buttonPadding: EdgeInsets.zero,
               children: [
                 "\₹${dish.dishPrice}".text.xl.bold.make(),
-                EditButton(dish.dishId),
+                EditButton(dish),
               ],
             ).pOnly(right: 16.0)
           ],
@@ -49,18 +52,18 @@ class CatalogItemAdmin extends StatelessWidget {
 }
 
 class EditButton extends StatelessWidget {
-  final int dish_id;
+  final Dish dish;
 
-  EditButton(this.dish_id);
+  EditButton(this.dish);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return ElevatedButton(
       onPressed: () {
         Navigator.pushNamed(
           context,
           '/dishEditForm',
-          arguments: dish_id,
+          arguments: dish,
         );
       },
       style: ButtonStyle(

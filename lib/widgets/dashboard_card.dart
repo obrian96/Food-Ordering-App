@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/util/logcat.dart';
+import 'package:food_ordering_app/views/admin/admin_catalog_item.dart';
 
-class SimpleCardView extends StatelessWidget {
+class DashboardCard extends StatelessWidget {
   static const String TAG = 'dashboard_card.dart';
 
   final int index;
   final String name;
 
-  SimpleCardView({this.index, this.name});
+  DashboardCard({this.index, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,6 @@ class SimpleCardView extends StatelessWidget {
           splashColor: Colors.grey[200],
           borderRadius: BorderRadius.circular(8),
           onTap: () {
-            Log.i(TAG, 'You clicked on SimpleCardView item: ${index}');
             switch (index) {
               case 0:
                 Navigator.pushNamed(context, '/adminOrderManagement');
@@ -31,6 +30,10 @@ class SimpleCardView extends StatelessWidget {
 
               case 1:
                 Navigator.pushNamed(context, '/adminRestaurantManagement');
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => CatalogItemAdmin()));
                 break;
 
               case 2:

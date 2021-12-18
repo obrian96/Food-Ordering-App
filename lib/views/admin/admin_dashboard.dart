@@ -1,17 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/Forms/dish_add_form.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
-import 'package:food_ordering_app/models/dish_list.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/services/user_services.dart';
+import 'package:food_ordering_app/util/image_helper.dart';
 import 'package:food_ordering_app/util/toast.dart';
-import 'package:food_ordering_app/views/admin/admin_catalog_item.dart';
 import 'package:food_ordering_app/views/admin/admin_navigation_drawer.dart';
 import 'package:food_ordering_app/widgets/dashboard_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class AdminDashboard extends StatefulWidget {
   @override
@@ -24,6 +21,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
     'Restaurant Menu Management',
     'User Management',
   ];
+
+  var imgArgs;
 
   @override
   Widget build(context) {
@@ -48,7 +47,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
         child: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
-            return SimpleCardView(
+            return DashboardCard(
               index: index,
               name: listItems[index],
             );
@@ -58,10 +57,57 @@ class _AdminDashboardState extends State<AdminDashboard> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DishAddForm()));
+          // Navigator.pushNamed(context, '/dishAddForm');
+          showImagePickerOptions(context);
         },
         child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  Future showImagePickerOptions(context) async {
+    return showDialog(
+      context: context,
+      // barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Add New Item'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const [
+                Text("Choose a new image from..."),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text('Gallery'),
+              onPressed: () {
+                Navigator.pop(context, 'Gallery');
+                _handleURLButtonPress(context, ImageSourceType.gallery);
+              },
+            ),
+            TextButton(
+              child: Text('Camera'),
+              onPressed: () {
+                Navigator.pop(context, 'Camera');
+                _handleURLButtonPress(context, ImageSourceType.camera);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _handleURLButtonPress(context, type) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ImageFromGalleryEx(
+          type,
+          nextRoute: '/dishAddForm',
+        ),
       ),
     );
   }

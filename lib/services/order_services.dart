@@ -109,7 +109,7 @@ class OrderServices {
     return apiResponse;
   }
 
-  Future<ApiResponse> getOrderList(adminId, userId) async {
+  Future<ApiResponse> getOrderList(userId) async {
     ApiResponse apiResponse = ApiResponse();
     Uri url = Uri.parse(BASE_URL + '/order_management/order_list');
     try {
@@ -119,7 +119,6 @@ class OrderServices {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode({
-          'admin_id': adminId,
           'user_id': userId,
         }),
       );
@@ -153,7 +152,7 @@ class OrderServices {
     return apiResponse;
   }
 
-  Future<ApiResponse> getOrderItems(String adminId, int orderId) async {
+  Future<ApiResponse> getOrderItems(int orderId) async {
     ApiResponse apiResponse = new ApiResponse();
     Uri url = Uri.parse(BASE_URL + '/order_management/order_items');
     OrderList orderList = new OrderList();
@@ -164,7 +163,6 @@ class OrderServices {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode({
-          'admin_id': adminId,
           'order_id': orderId,
         }),
       );

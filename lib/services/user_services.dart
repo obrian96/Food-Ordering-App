@@ -18,7 +18,7 @@ class UserServices {
   static const BASE_URL = 'http://192.168.1.2:3000';
   static int detailsTryCount = 0;
 
-  Future<ApiResponse> details(String userId) async {
+  Future details(String userId) async {
     ApiResponse _apiResponse = new ApiResponse();
     Uri url = Uri.parse(BASE_URL + '/userdetails');
     try {
@@ -55,7 +55,7 @@ class UserServices {
     return _apiResponse;
   }
 
-  Future<ApiResponse> login(String userName, String userPass) async {
+  Future login(String userName, String userPass) async {
     ApiResponse apiResponse = new ApiResponse();
     Uri url = Uri.parse(BASE_URL + '/login');
 
@@ -89,7 +89,7 @@ class UserServices {
     return apiResponse;
   }
 
-  Future<ApiResponse> signup(
+  Future signup(
       String userId, String username, String userEmail, String userPass) async {
     int isAdmin = 0;
     ApiResponse _apiResponse = new ApiResponse();
@@ -128,10 +128,8 @@ class UserServices {
     return _apiResponse;
   }
 
-  Future<ApiResponse> user_detail_form(String userId, String email,
-      String phone, String address, String pincode) async {
-//    int isAvailable= 0;
-    Log.d(TAG, 'Pincode: $pincode');
+  Future updateUserDetails(String userId, String userName, String userImage,
+      String email, String phone, String address, String password) async {
     ApiResponse apiResponse = new ApiResponse();
 
     Uri url = Uri.parse(BASE_URL + '/userdetails');
@@ -143,10 +141,12 @@ class UserServices {
         },
         body: jsonEncode(<String, dynamic>{
           'user_id': userId,
+          'user_name': userName,
+          'user_image': userImage,
           'user_email': email,
+          'user_pass': password,
           'user_phno': phone,
           'user_addline': address,
-          'user_pincode': pincode,
         }),
       );
 
@@ -162,9 +162,105 @@ class UserServices {
           apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
           break;
       }
-    } catch (e) {
-      Log.e(TAG, 'Line 167: Exception: $e');
+    } catch (e, s) {
+      Log.e(TAG, '$e', stackTrace: s);
       apiResponse.apiError = ApiError(error: '$e');
+    }
+    return apiResponse;
+  }
+
+  Future getAllUser(String user_id) async {
+    Log.d(TAG, '$user_id');
+    ApiResponse apiResponse = ApiResponse();
+    Uri url = Uri.parse(BASE_URL + '/userdetails/all_user');
+    try {
+      final http.Response response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'user_id': user_id,
+        }),
+      );
+      switch (response.statusCode) {
+        case 200:
+          Log.i(TAG, 'User list: ${response.body}');
+          Iterable i = json.decode(response.body);
+          List<User> users = List<User>.from(
+            i.map((model) {
+              return User.fromJson(model);
+            }),
+          );
+          apiResponse.data = users;
+          break;
+
+        default:
+          Log.e(TAG, '${response.body}');
+          apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
+      }
+    } catch (e, s) {
+      Log.e(TAG, 'Exception: $e', stackTrace: s);
+    }
+    return apiResponse;
+  }
+
+  Future changeRole(userId, isAdmin) async {
+    ApiResponse apiResponse = new ApiResponse();
+    Uri url = Uri.parse(BASE_URL + '/userdetails/change_role');
+    try {
+      final http.Response response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'user_id': userId,
+          'isAdmin': isAdmin,
+        }),
+      );
+      switch (response.statusCode) {
+        case 200:
+          apiResponse.data =
+              ServerResponse.fromJson(json.decode(response.body));
+          break;
+
+        default:
+          Log.e(TAG, '${response.body}');
+          apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
+      }
+    } catch (e, s) {
+      Log.e(TAG, 'Exception: $e', stackTrace: s);
+    }
+    return apiResponse;
+  }
+
+  Future changeOrderStatus(orderId, orderStatus) async {
+    ApiResponse apiResponse = new ApiResponse();
+    Uri url = Uri.parse(BASE_URL + '/order_management/change_order_status');
+    try {
+      final http.Response response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'order_id': orderId,
+          'order_status': orderStatus,
+        }),
+      );
+      switch (response.statusCode) {
+        case 200:
+          apiResponse.data =
+              ServerResponse.fromJson(json.decode(response.body));
+          break;
+
+        default:
+          Log.e(TAG, '${response.body}');
+          apiResponse.apiError = ApiError.fromJson(json.decode(response.body));
+      }
+    } catch (e, s) {
+      Log.e(TAG, 'Exception: $e', stackTrace: s);
     }
     return apiResponse;
   }

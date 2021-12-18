@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:food_ordering_app/animation/fade_animation.dart';
 import 'package:food_ordering_app/models/api_error.dart';
 import 'package:food_ordering_app/models/api_response.dart';
 import 'package:food_ordering_app/services/rest_services.dart';
+import 'package:food_ordering_app/util/soft_utils.dart';
 import 'package:food_ordering_app/util/toast.dart';
+import 'package:velocity_x/src/flutter/padding.dart';
 
 class DishAddForm extends StatefulWidget {
   @override
@@ -14,66 +18,44 @@ class _DishAddFormState extends State<DishAddForm> {
   // TextEditingController DishID=new TextEditingController();
   TextEditingController dishName = new TextEditingController();
   TextEditingController dishPrice = new TextEditingController();
-  TextEditingController restaurantID = new TextEditingController();
+  TextEditingController adminId = new TextEditingController();
 
   //int IsAvailable = 0;  String colorGroupValue = '';
   String valueChoose;
-  List listItem = ["starter", "main course", "desserts"];
+  List listItem = ['starter', 'main course', 'dessert', 'snack', 'beverage'];
+
+  String userId, dishImage;
 
   @override
   Widget build(BuildContext context) {
+    String base64Image = ModalRoute.of(context).settings.arguments;
+    dishImage = base64Image;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff409439),
-        leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-        title: Center(child: Text("ADD DISH")),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {})
-        ],
+        // backgroundColor: Color(0xff409439),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text('Add Dish'),
+        centerTitle: true,
+        // actions: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: <Widget>[
-            // Card(
-            //
-            //   child: TextField(
-            //     controller: DishID,
-            //     style: TextStyle(
-            //       color: Colors.black,
-            //     ),
-            //
-            //     decoration: InputDecoration(
-            //       filled: true,
-            //       fillColor: Color(0xffEEEEEE),
-            //       labelText: "Dish ID*",
-            //     ),
-            //     onChanged: (value) {
-            //
-            //     },
-            //
-            //   ),
-            //
-            //   margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
-            //
-            // ),
-            // Align(
-            //
-            //   alignment: Alignment.topLeft,
-            //   child:  Padding(
-            //     padding: const EdgeInsets.only(left: 22.0),
-            //     child: Text(
-            //       "generated automatically",
-            //
-            //       style: TextStyle(
-            //         color: Color.fromRGBO(0, 0, 0, 0.6),
-            //         fontSize: 12.0,
-            //
-            //       ),
-            //
-            //
-            //     ),
-            //   ),
-            // ),
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.memory(
+                base64.decode(base64Image.split(',').last),
+                width: 150,
+                height: 150,
+                fit: BoxFit.fitHeight,
+                gaplessPlayback: true,
+              ),
+            ).p16(),
             Card(
               child: TextField(
                 controller: dishName,
@@ -104,40 +86,6 @@ class _DishAddFormState extends State<DishAddForm> {
               ),
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
             ),
-            // Row(
-            //   children: <Widget>[
-            //     SizedBox(
-            //       width: 40.0,
-            //     ),
-            //     Text("Available "),
-            //     Radio(value: 'Available',
-            //         groupValue: colorGroupValue,
-            //         onChanged: (val){
-            //           colorGroupValue = val;
-            //           IsAvailable = 1;
-            //           setState(() {
-            //
-            //           });
-            //         }),
-            //     SizedBox(
-            //       width: 50.0,
-            //     ),
-            //
-            //     Text("Not Available"),
-            //     Radio(value: 'Not Available',
-            //         groupValue: colorGroupValue,
-            //         onChanged: (val){
-            //           colorGroupValue = val;
-            //           IsAvailable = 0;
-            //           setState(() {
-            //
-            //           });
-            //         }),
-            //
-            //   ],
-            //
-            // ),
-
             Card(
               child: DropdownButton(
                 hint: Text("Select Dish Type"),
@@ -162,21 +110,21 @@ class _DishAddFormState extends State<DishAddForm> {
               ),
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
             ),
-            Card(
-              child: TextField(
-                controller: restaurantID,
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Color(0xffEEEEEE),
-                  labelText: "admin ID",
-                ),
-                onChanged: (value) {},
-              ),
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
-            ),
+            // Card(
+            //   child: TextField(
+            //     controller: adminId,
+            //     style: TextStyle(
+            //       color: Colors.black,
+            //     ),
+            //     decoration: InputDecoration(
+            //       filled: true,
+            //       fillColor: Color(0xffEEEEEE),
+            //       labelText: "admin ID",
+            //     ),
+            //     onChanged: (value) {},
+            //   ),
+            //   margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
+            // ),
             FadeAnimation(
               1.2,
               Container(
@@ -192,22 +140,28 @@ class _DishAddFormState extends State<DishAddForm> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          handleDishAdd(context);
+          if (dishName.text.isNotEmpty && dishPrice.text.isNotEmpty) {
+            _handleDishAdd(context);
+          } else {
+            toast('Fields must not empty!', Colors.red);
+          }
         },
         child: Icon(Icons.save),
       ),
     );
   }
 
-  void handleDishAdd(BuildContext context) async {
-    const int isadmin = 1;
+  void _handleDishAdd(BuildContext context) async {
+    const int isAdmin = 1;
     RestServices restServices = new RestServices();
+    userId = await SoftUtils().getUserId();
     ApiResponse _apiResponse = await restServices.addDish(
+      dishImage,
       // DishID.text,
       dishName.text,
       int.parse(dishPrice.text),
       valueChoose,
-      restaurantID.text,
+      userId,
     );
 
     if ((_apiResponse.apiError as ApiError) == null) {
@@ -215,10 +169,10 @@ class _DishAddFormState extends State<DishAddForm> {
         context,
         '/loadDash',
         ModalRoute.withName('/loadDash'),
-        arguments: isadmin,
+        arguments: isAdmin,
       );
     } else {
-      toast("DishAdd Failed!", Colors.green);
+      toast("Dish Adding Failed!", Colors.red);
     }
   }
 }

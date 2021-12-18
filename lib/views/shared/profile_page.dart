@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:food_ordering_app/models/user_details.dart';
 import 'package:food_ordering_app/util/logcat.dart';
 import 'package:food_ordering_app/util/soft_utils.dart';
-import 'package:food_ordering_app/views/user/user_order_history.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -48,7 +47,7 @@ class _ProfilePage extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FutureBuilder(
-                future: loadProfileImage(),
+                future: _loadProfileImage(),
                 builder: (context, snapshot) {
                   switch (SoftUtils().state(snapshot)) {
                     case FutureState.COMPLETE:
@@ -124,10 +123,11 @@ class _ProfilePage extends State<ProfilePage> {
                 margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
                 child: ListTile(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OrderHistoryPage()));
+                    Navigator.pushNamed(
+                      context,
+                      '/orderHistory',
+                      arguments: [args.user_id, args.user_name],
+                    );
                   },
                   leading: Icon(
                     Icons.history,
@@ -156,7 +156,11 @@ class _ProfilePage extends State<ProfilePage> {
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
               child: ListTile(
                 onTap: () {
-                  Navigator.pushNamed(context, '/userDetailForm');
+                  Navigator.pushNamed(
+                    context,
+                    '/userDetailForm',
+                    arguments: args,
+                  );
                 },
                 leading: Icon(
                   Icons.edit,
@@ -209,7 +213,7 @@ class _ProfilePage extends State<ProfilePage> {
     );
   }
 
-  Future loadProfileImage() async {
+  Future _loadProfileImage() async {
     sharedPrefs = await SharedPreferences.getInstance();
     String user_image = await sharedPrefs.getString('user_image');
     Log.d(TAG, 'Image: ${user_image}');

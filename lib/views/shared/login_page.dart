@@ -208,9 +208,8 @@ class LoginPage extends StatelessWidget {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('user_id', (apiResponse.data as User).user_id);
         prefs.setString('user_name', (apiResponse.data as User).user_name);
-        Log.i(TAG,
-            'Login Response Image: \n${(apiResponse.data as User).user_image}');
         prefs.setString('user_image', (apiResponse.data as User).user_image);
+        prefs.setString('user_pass', (apiResponse.data as User).user_pass);
         prefs.setInt('isAdmin', (apiResponse.data as User).isAdmin);
         int isAdminStored = (apiResponse.data as User).isAdmin;
         // Push this named route and remove all previous routes
